@@ -143,6 +143,7 @@
 	.align-left { text-align: left; }
 	.align-center { text-align: center; }
 	.align-right { text-align: right; }
+	.align-middle { margin: 1.5em 0; }
 
 	.no-select {
 		user-select: none;
@@ -537,6 +538,41 @@
 			-ms-align-items: -ms-flex-start;
 			align-items: flex-start;
 		}
+		
+		/* ======================================
+   ACTION MENU SCROLL X
+====================================== */
+
+#action {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+#action::-webkit-scrollbar {
+    display: none;
+}
+
+#action .actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+    width: max-content;
+    min-width: 100%;
+    margin: 0;
+    padding: 0 0 0.5rem;
+    list-style: none;
+}
+
+#action .actions li {
+    flex: 0 0 auto;
+}
+
+#action .actions .button {
+    white-space: nowrap;
+}
 
 /* Form */
 
@@ -1434,8 +1470,8 @@
 		input[type="reset"].primary,
 		input[type="button"].primary,
 		.button.primary {
-			background-color: rgba(255,255,255,.3);
-			color: #ffffff !important;
+			background-color: #ffffff;
+			color: #030303 !important;
 		}
 		
 		input[type="submit"].xlarge,
@@ -1645,7 +1681,6 @@
 
 	.wrapper {
 		padding: 2em;
-		margin-bottom: 5em;
 	}
 
 		.wrapper.align-top {
@@ -1656,9 +1691,13 @@
 			padding: 3em 0;
 		}
 
-			.wrapper.style:first-child {
+			.wrapper.style:last-child {
 				padding-top: 0
 			}
+	
+	.wrapper:last-child {
+		margin-bottom: 5em;
+	}
 			
 /* Dropdown Search */
 
@@ -2015,25 +2054,6 @@
 			
 		}
 		
-/* Featured Titles */
-		
-	#dailyFeaturedTitles {
-		background-color: #0d0d0d;
-		padding: 2em;
-		border-radius: 0.5em;
-	}
-	
-		@media screen and (max-width: 736px) {
-			
-			#dailyFeaturedTitles {
-				background-color: transparent;
-				padding: 0;
-				border-radius: 0;
-				
-			}
-			
-		}
-		
 /* All Artistas */
 
 	#allArtists .box {
@@ -2128,6 +2148,7 @@
 				-ms-flex-direction: column;
 				flex-direction: column;
 				height: auto;
+				margin-bottom: 6em;
 			}
 				
 				#subalbums .artist-page.column .artist-left {
