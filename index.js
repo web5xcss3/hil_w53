@@ -3,30 +3,6 @@
  PLAY 90 MUSIC - SPA CORE BY WEB5XCSS3 - W53 DEVELOPMENT
 ====================================================
 
- Descrição:
-Inicialização principal da aplicação (SPA) usando jQuery.
-Responsável por carregar, configurar e ativar todos os
-módulos do sistema após o DOM estar pronto.
-
-⚙️ Estrutura:
-- Encapsulamento em IIFE para evitar conflitos globais
-- Uso de "use strict" para código mais seguro
-- Execução automática quando o DOM estiver carregado
-
-🧠 Funções principais inicializadas:
-- Renderização do App (App.js)
-- Sistema de Tabs (SPA navigation)
-- Eventos globais (menu, dropdown, search)
-- Renderização de dados dinâmicos
-- Inicialização de plugins (Slick, FillColor, etc)
-- Sistema de busca otimizado
-
- Observações:
-- Este bloco roda apenas UMA vez
-- Toda reatividade da UI é controlada internamente (SPA)
-- Evita recarregamento de página
-
-====================================================
 */
 
 (function($) {
@@ -60,83 +36,84 @@ módulos do sistema após o DOM estar pronto.
         // CARREGAR API
         // ===============================
         Promise.all([
-            fetch(`${API}/mock`).then(res => res.json()),
-            fetch(`${API}/labels`).then(res => res.json()),
-            fetch(`${API}/genres`).then(res => res.json())
-        ])
+                fetch(`${API}/mock`).then(res => res.json()),
+                fetch(`${API}/labels`).then(res => res.json()),
+                fetch(`${API}/genres`).then(res => res.json())
+            ])
 
-        .then(([featured, labels, genres]) => {
+            .then(([featured, labels, genres]) => {
 
-            console.log('API carregada:', featured);
+                console.log('API carregada:', featured);
 
-            currentData = {
+                currentData = {
 
-                featured: featured,
+                    featured: featured,
 
-                albums: featured.filter(item =>
-                    item.type === 'albums'
-                ),
+                    albums: featured.filter(item =>
+                        item.type === 'albums'
+                    ),
 
-                singles: featured.filter(item =>
-                    item.type === 'singles'
-                ),
+                    singles: featured.filter(item =>
+                        item.type === 'singles'
+                    ),
 
-                vinyls: featured.filter(item =>
-                    item.type === 'vinyls'
-                ),
+                    vinyls: featured.filter(item =>
+                        item.type === 'vinyls'
+                    ),
 
-                instrumental: featured.filter(item =>
-                    item.type === 'instrumental'
-                ),
+                    instrumental: featured.filter(item =>
+                        item.type === 'instrumental'
+                    ),
 
-                djs: featured.filter(item =>
-                    item.type === 'djs'
-                ),
+                    djs: featured.filter(item =>
+                        item.type === 'djs'
+                    ),
 
-                musics: featured.filter(item =>
-                    item.type === 'music'
-                ),
+                    musics: featured.filter(item =>
+                        item.type === 'music'
+                    ),
 
-                playlists: featured.filter(item =>
-                    item.type === 'playlists'
-                )
+                    playlists: featured.filter(item =>
+                        item.type === 'playlists'
+                    )
 
-            };
+                };
 
-            // globals antigas
-            window.currentData = currentData;
-            window.mockFeatured = featured;
-            window.mockLabels = labels;
-            window.mockGenres = genres;
+                // globals antigas
+                window.currentData = currentData;
+                window.mockFeatured = featured;
+                window.mockLabels = labels;
+                window.mockGenres = genres;
 
-            // backup
-            originalData.featured = [...featured];
+                // backup
+                originalData.featured = [...featured];
 
-            // ===============================
-            // RENDER
-            // ===============================
-            renderAllAlbums();
-            renderAllArtists();
-            renderAllPlaylists();
-            renderTimeline();
-            renderMusics();
-            renderAllSingles();
-            renderAllVinyls();
-            renderAllDjs();
-            renderAllInstrumental();
-            renderFeaturedAlbums();
-            renderRecentlyPlayed();
-            renderFeaturedDjs();
-            renderDailyHit();
-            renderAllLabels();
-            renderDailyFeaturedTitles();
-            renderAllGenres();
+                // ===============================
+                // RENDER
+                // ===============================
+                renderAllAlbums();
+                renderAllArtists();
+                renderAllPlaylists();
+                renderTimeline();
+                renderMusics();
+                renderAllSingles();
+                renderAllVinyls();
+                renderAllDjs();
+                renderAllInstrumental();
+                renderAllVideos();
+                renderFeaturedAlbums();
+                renderRecentlyPlayed();
+                renderFeaturedDjs();
+                renderDailyHit();
+                renderAllLabels();
+                renderDailyFeaturedTitles();
+                renderAllGenres();
 
-        })
+            })
 
-        .catch(err => {
-            console.error('Erro API:', err);
-        });
+            .catch(err => {
+                console.error('Erro API:', err);
+            });
 
         // ===============================
         // UTILS
@@ -154,17 +131,17 @@ módulos do sistema após o DOM estar pronto.
         // ===============================
         // EVENTOS (SPA SAFE)
         // ===============================
-		function setupEventListeners() {
+        function setupEventListeners() {
 
-			// NAV TABS
-			$(document).on('click', '[data-tab]', function(event) {
-				event.preventDefault();
-				const tab = $(this).data('tab');
-				if (tab) switchTab(tab);
-			});
+            // NAV TABS
+            $(document).on('click', '[data-tab]', function(event) {
+                event.preventDefault();
+                const tab = $(this).data('tab');
+                if (tab) switchTab(tab);
+            });
 
-			// BOTÕES VOLTAR
-			$(document).on('click', `
+            // BOTÕES VOLTAR
+            $(document).on('click', `
 				#backToArtistsBtn,
 				#backToTimelineBtn,
 				#backToTimelineFromGenres,
@@ -176,38 +153,39 @@ módulos do sistema após o DOM estar pronto.
 				#backToSingleBtn,
 				#backToVinylBtn,
 				#backToDjsBtn,
-				#backToInstrumentaisBtn
+				#backToInstrumentaisBtn,
+				#backToVideos
 			`, function(e) {
-				e.preventDefault();
+                e.preventDefault();
 
-				let tab = $(this).data('tab');
+                let tab = $(this).data('tab');
 
-				// FALLBACK INTELIGENTE
-				if (!tab) {
+                // FALLBACK INTELIGENTE
+                if (!tab) {
 
-					// FORÇAR TIMELINE
-					if (
-						this.id === 'backToTimelineBtn' ||
-						this.id === 'backToTimelineFromGenres'
-					) {
-						tab = 'timeline';
-					}
+                    // FORÇAR TIMELINE
+                    if (
+                        this.id === 'backToTimelineBtn' ||
+                        this.id === 'backToTimelineFromGenres'
+                    ) {
+                        tab = 'timeline';
+                    }
 
-					// OUTROS CASOS ESPECÍFICOS
-					else if (this.id === 'backToLabelsBtn') {
-						tab = 'labels';
-					}
+                    // OUTROS CASOS ESPECÍFICOS
+                    else if (this.id === 'backToLabelsBtn') {
+                        tab = 'labels';
+                    }
 
-					// PADRÃO GLOBAL
-					else {
-						tab = 'artists';
-					}
-				}
+                    // PADRÃO GLOBAL
+                    else {
+                        tab = 'artists';
+                    }
+                }
 
-				switchTab(tab);
-			});
+                switchTab(tab);
+            });
 
-		}
+        }
 
         // ===============================
         // TABS (SEM CACHE ❗)
@@ -253,6 +231,7 @@ módulos do sistema após o DOM estar pronto.
         window.renderAllVinyls = renderAllVinyls;
         window.renderAllDjs = renderAllDjs;
         window.renderAllInstrumental = renderAllInstrumental;
+        window.renderAllVideos = renderAllVideos;
         window.renderFeaturedAlbums = renderFeaturedAlbums;
         window.renderRecentlyPlayed = renderRecentlyPlayed;
         window.renderFeaturedDjs = renderFeaturedDjs;
@@ -260,13 +239,17 @@ módulos do sistema após o DOM estar pronto.
         window.renderAllLabels = renderAllLabels;
         window.renderDailyFeaturedTitles = renderDailyFeaturedTitles;
         window.renderAllGenres = renderAllGenres;
+        window.renderVideos = renderVideos;
+        window.renderHomeVideos = renderHomeVideos;
 
         // ===============================
-        // INIT (APENAS EVENTOS)
+        // INIT
         // ===============================
         setupEventListeners();
 
-        // Funções de renderização featuredAlbums
+        // ===============================
+        // FUCTION FEATURED ALBUMS
+        // ===============================
         function renderFeaturedAlbums() {
 
             const $container = $('#featuredAlbums');
@@ -307,7 +290,7 @@ módulos do sistema após o DOM estar pronto.
     `).join(''));
 
             // =====================================================
-            // BANNER OTIMIZADO (SEM LAG)
+            // BANNER
             // =====================================================
             let bannerTimeout;
 
@@ -346,7 +329,7 @@ módulos do sistema após o DOM estar pronto.
             }
 
             // =====================================================
-            // SLICK (SEM BUG / SEM DUPLICAÇÃO)
+            // SLICK
             // =====================================================
             if ($container.hasClass('slick-initialized')) {
                 $container.slick('unslick');
@@ -422,7 +405,9 @@ módulos do sistema após o DOM estar pronto.
 
         }
 
-        // Funções de renderização dailyHit
+        // ===============================
+        // FUCTION DAILY HITS
+        // ===============================
         function renderDailyHit(count = 1) {
             const $container = $('#dailyHit');
             if (!$container.length) return;
@@ -532,13 +517,18 @@ módulos do sistema após o DOM estar pronto.
             });
         }
 
+        // ===============================
+        // FUCTION DAILY FEATURED TITLES
+        // ===============================
         // UTIL
         function shuffleArray(array) {
             const arr = array.slice();
+
             for (let i = arr.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [arr[i], arr[j]] = [arr[j], arr[i]];
             }
+
             return arr;
         }
 
@@ -547,56 +537,63 @@ módulos do sistema após o DOM estar pronto.
 
             const $container = $('#dailyFeaturedTitles');
             const $titleElement = $('#dailyFeaturedTitle');
+
             if (!$container.length) return;
 
             const today = new Date().toISOString().split('T')[0];
-            const cacheKey = 'dailyFeaturedTitlesCache';
-            const indexKey = 'dailyFeaturedIndex';
 
+            // cache novo para evitar usar cache antigo duplicado
+            const cacheKey = 'dailyFeaturedTitlesCache_v3';
+            const indexKey = 'dailyFeaturedIndex_v3';
+
+            const normalize = text => String(text || '').toLowerCase().trim();
+
+            // dados automáticos da mockData/mockFeatured
+            const allItemsRaw = window.mockFeatured || currentData.featured || [];
+
+            // remove duplicados
+            const seen = new Set();
+
+            const allItems = allItemsRaw.filter(item => {
+                if (!item) return false;
+
+                const key = [
+                    normalize(item.artist),
+                    normalize(item.title || item.name),
+                    normalize(item.embedUrl)
+                ].join('|');
+
+                if (seen.has(key)) return false;
+
+                seen.add(key);
+                return true;
+            });
+
+            // artistas automáticos vindos da mockData
             const targetThemes = [
-                "Let Me Be",
-                "I Believe",
-                "Copernico",
-                "DJ Bobo",
-                "Masterboy",
-                "Culture Beat",
-                "Haddaway",
-                "Da Blitz",
-                "Taleesa",
-                "T.F.O.",
-                "Double You",
-                "Future City",
-                "ICE MC",
-                "M.C. Sar & The Real McCoy",
-                "Flexx",
-                "Maxx",
-                "F.B. Machine",
+                ...new Set(
+                    allItems
+                    .map(item => item.artist)
+                    .filter(Boolean)
+                )
             ];
 
             let selected = [];
-            let currentIndex = parseInt(localStorage.getItem(indexKey)) || 0;
-            let themeOfDay = "";
+            let currentIndex = parseInt(localStorage.getItem(indexKey), 10) || 0;
+            let themeOfDay = '';
 
-            const normalize = str => (str || '').toLowerCase().trim();
-
-            // TODAS as coleções
-            const allItems = [
-                ...(currentData.albums || []),
-                ...(currentData.singles || []),
-                ...(currentData.vinyls || []),
-                ...(currentData.featured || [])
-            ];
-
-            // limpa cache se mudou o dia
             let cachedData = JSON.parse(localStorage.getItem(cacheKey)) || {};
+
             if (cachedData.date !== today) {
                 localStorage.removeItem(cacheKey);
                 cachedData = {};
             }
 
             if (cachedData.items && cachedData.items.length) {
+
                 selected = cachedData.items;
-                themeOfDay = cachedData.theme || "";
+                themeOfDay = cachedData.theme || '';
+
             } else {
 
                 const total = targetThemes.length;
@@ -605,25 +602,17 @@ módulos do sistema após o DOM estar pronto.
                 while (attempts < total) {
 
                     themeOfDay = targetThemes[currentIndex % total];
-                    const search = normalize(themeOfDay);
 
-                    const matchingItems = allItems.filter(item => {
-                        if (!item) return false;
-
-                        const artist = normalize(item.artist);
-                        const title = normalize(item.title);
-
-                        return (
-                            artist.includes(search) ||
-                            title.includes(search)
-                        );
-                    });
+                    const matchingItems = allItems.filter(item =>
+                        normalize(item.artist) === normalize(themeOfDay)
+                    );
 
                     if (matchingItems.length > 0) {
 
-                        selected = shuffleArray(matchingItems);
+                        selected = shuffleArray(matchingItems).slice(0, 12);
 
                         localStorage.setItem(indexKey, (currentIndex + 1) % total);
+
                         localStorage.setItem(cacheKey, JSON.stringify({
                             date: today,
                             theme: themeOfDay,
@@ -638,48 +627,51 @@ módulos do sistema após o DOM estar pronto.
                     }
                 }
 
-                // FALLBACK (nunca vazio)
                 if (!selected.length) {
-                    selected = shuffleArray(allItems).slice(0, 6);
-                    themeOfDay = "Destaques";
+                    selected = shuffleArray(allItems).slice(0, 12);
+                    themeOfDay = 'Destaques';
                 }
             }
 
-            // título
             if ($titleElement.length) {
-                $titleElement.html(`Especial • <span class="artist-name">${escapeHtml(themeOfDay)}</span>`);
-
+                $titleElement.html(
+                    `Especial • <span class="artist-name">${escapeHtml(themeOfDay)}</span>`
+                );
             }
 
-            // render
-            $container.html(selected.map(item => `
-				<div class="album-card" data-id="${item.id || ''}" data-type="featured">
-					<article class="box post">
-						<div class="content">
-							<div class="image fit avg md-ripples ripples-light" data-position="center">
-								<img src="${item.image || ''}" alt="${escapeHtml(item.title || '')}" loading="lazy">
-							</div>
-							<ul class="icons">
-								<li><button type="button" class="icon solid fa-play"></button></li>
-							</ul>
-						</div>
-						<header class="align-left">
-							<h3>${escapeHtml(item.artist || '')}</h3>
-							<p>${escapeHtml(item.title || '')}</p>
-						</header>
-					</article>
-				</div>
-			`).join(''));
-
-            // Aplica fillColor apenas no container atual
-            $container.find('.avg').fillColor({
-                type: 'avg'
-            });
-
-            // 🔹 Slick 
             if ($container.hasClass('slick-initialized')) {
                 $container.slick('unslick');
             }
+
+            $container.html(selected.map(item => `
+        <div class="album-card"
+             data-id="${item.id || ''}"
+             data-type="${item.type || 'featured'}">
+
+            <article class="box post">
+                <div class="content">
+                    <div class="image fit avg md-ripples ripples-light" data-position="center">
+                        <img src="${item.image || ''}" alt="${escapeHtml(item.title || item.name || '')}" loading="lazy">
+                    </div>
+
+                    <ul class="icons">
+                        <li>
+                            <button type="button" class="icon solid fa-play"></button>
+                        </li>
+                    </ul>
+                </div>
+
+                <header class="align-left">
+                    <h3>${escapeHtml(item.artist || '')}</h3>
+                    <p>${escapeHtml(item.title || item.name || '')}</p>
+                </header>
+            </article>
+        </div>
+    `).join(''));
+
+            $container.find('.avg').fillColor({
+                type: 'avg'
+            });
 
             $container.slick({
                 focusOnSelect: true,
@@ -717,15 +709,19 @@ módulos do sistema após o DOM estar pronto.
                 ]
             });
 
-            // clique
-            $container.find('.album-card').on('click', function() {
-                const id = parseInt($(this).data('id'));
-                if (!isNaN(id)) {
-                    openPlayer(id, 'featured');
+            $container.find('.album-card').off('click').on('click', function() {
+                const id = $(this).attr('data-id');
+                const type = $(this).attr('data-type');
+
+                if (id) {
+                    openPlayer(id, type);
                 }
             });
         }
 
+        // ===============================
+        // FUCTION FEATURED DJS
+        // ===============================
         // Funções de renderização featuredDjs
         function renderFeaturedDjs() {
             const $container = $('#featuredDjs');
@@ -815,134 +811,174 @@ módulos do sistema após o DOM estar pronto.
 
         }
 
-        // Funções de renderização recentlyPlayed
+        // ===============================
+        // FUCTION RECENT PLAYED
+        // ===============================
         function renderRecentlyPlayed() {
             const $container = $('#recentlyPlayed');
             if (!$container.length) return;
 
             const $titleElement = $('#recentlyPlayedTitle');
+
             if ($titleElement.length) {
                 $titleElement.text('Recente');
             }
 
             const stored = JSON.parse(localStorage.getItem('recentlyPlayed')) || [];
+            const allItems = window.mockFeatured || currentData.featured || [];
 
-            const sourceTypes = {
-                album: currentData.albums || [],
-                albums: currentData.albums || [],
-                playlist: currentData.playlists || [],
-                playlists: currentData.playlists || [],
-                instrumental: currentData.instrumental || [],
-                djs: currentData.djs || [],
-                vinyls: currentData.vinyls || [],
-                singles: currentData.singles || [],
-                musics: currentData.musics || [],
-                featured: currentData.featured || []
-            };
+            const items = stored.map(entry => {
 
-            const html = stored.map(entry => {
-                let item = sourceTypes[entry.type]?.find(i => i.id === entry.id);
-                if (!item) return '';
+                // YouTube
+                if (entry.type === 'youtube') {
+                    return {
+                        id: entry.id,
+                        type: 'youtube',
+                        title: entry.title || 'YouTube Video',
+                        artist: entry.artist || 'YouTube',
+                        image: entry.image || `https://img.youtube.com/vi/${entry.id}/hqdefault.jpg`
+                    };
+                }
 
-                const title = item.title || item.name || "Sem título";
-                const artist = item.artist || "Vários Artistas";
-                const image = item.image || "https://i.ibb.co/m5Cb336C/music-default.jpg";
+                // MockData
+                const item = allItems.find(album =>
+                    String(album.id) === String(entry.id) &&
+                    String(album.type || 'featured') === String(entry.type || 'featured')
+                );
+
+                if (!item) return null;
+
+                return {
+                    ...item,
+                    type: item.type || entry.type || 'featured'
+                };
+
+            }).filter(Boolean);
+
+            if ($container.hasClass('slick-initialized')) {
+                $container.slick('unslick');
+            }
+
+            if (!items.length) {
+                $container.html('');
+                return;
+            }
+
+            $container.html(items.map(item => {
+                const title = item.title || item.name || 'Sem título';
+                const artist = item.artist || 'Vários Artistas';
+                const image = item.image || 'https://i.ibb.co/m5Cb336C/music-default.jpg';
 
                 return `
-            <div class="album-card" data-id="${item.id || ''}" data-type="${entry.type}">
+            <div class="album-card"
+                 data-id="${item.id}"
+                 data-type="${item.type}"
+                 data-title="${escapeHtml(title)}"
+                 data-artist="${escapeHtml(artist)}"
+                 data-image="${image}">
+
                 <article class="box post">
                     <div class="content">
                         <div class="image fit md-ripples ripples-light" data-position="center">
                             <img src="${image}" alt="${escapeHtml(title)}" loading="lazy">
                         </div>
+
                         <ul class="icons">
-                            <li><button type="button" class="icon solid fa-play"></button></li>
+                            <li>
+                                <button type="button" class="icon solid fa-play"></button>
+                            </li>
                         </ul>
                     </div>
+
                     <header class="align-left">
                         <h3>${escapeHtml(artist)}</h3>
-						<p>${escapeHtml(title)}</p>
+                        <p>${escapeHtml(title)}</p>
                     </header>
                 </article>
             </div>
-			`;
-            }).join('');
+        `;
+            }).join(''));
 
-            $container.html(html);
-
-            // ⚡ Slick Slider (sem banner)
-            if (stored.length > 0) {
-                if ($container.hasClass('slick-initialized')) {
-                    $container.slick('unslick');
-                }
-
-                $container.slick({
-                    focusOnSelect: true,
-                    infinite: true,
-                    slidesToShow: 6,
-                    slidesToScroll: 1,
-                    speed: 300,
-                    appendArrows: $('#recentlyPlayed-slick-arrow'),
-                    nextArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-right md-ripples ripples-light"></button></li></ul>',
-                    prevArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-left md-ripples ripples-light"></button></li></ul>',
-                    responsive: [{
-                            breakpoint: 1280,
-                            settings: {
-                                slidesToShow: 6
-                            }
-                        },
-                        {
-                            breakpoint: 980,
-                            settings: {
-                                slidesToShow: 4
-                            }
-                        },
-                        {
-                            breakpoint: 736,
-                            settings: {
-                                slidesToShow: 3
-                            }
-                        },
-                        {
-                            breakpoint: 480,
-                            settings: {
-                                slidesToShow: 2
-                            }
+            $container.slick({
+                focusOnSelect: true,
+                infinite: true,
+                slidesToShow: 6,
+                slidesToScroll: 1,
+                speed: 300,
+                appendArrows: $('#recentlyPlayed-slick-arrow'),
+                nextArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-right md-ripples ripples-light"></button></li></ul>',
+                prevArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-left md-ripples ripples-light"></button></li></ul>',
+                responsive: [{
+                        breakpoint: 1280,
+                        settings: {
+                            slidesToShow: 6
                         }
-                    ]
-                });
-            }
-
-            // Evento para abrir no player
-            $container.find('.album-card').on('click', function() {
-                const id = parseInt($(this).data('id'));
-                const type = $(this).data('type');
-                if (!isNaN(id)) {
-                    openPlayer(id, type);
-                }
+                    },
+                    {
+                        breakpoint: 980,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 736,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    }
+                ]
             });
 
+            $container.find('.album-card').off('click').on('click', function() {
+                const id = $(this).attr('data-id');
+                const type = $(this).attr('data-type');
+                const title = $(this).attr('data-title');
+                const artist = $(this).attr('data-artist');
+                const image = $(this).attr('data-image');
+
+                if (type === 'youtube') {
+                    openPlayerYoutube(id, title, image, artist);
+                    return;
+                }
+
+                openPlayer(id, type);
+            });
         }
 
-        // Save Recent Played
+
         function saveToRecentlyPlayed(item) {
             const key = 'recentlyPlayed';
             const stored = JSON.parse(localStorage.getItem(key)) || [];
 
-            // Remove duplicados (mesmo id e tipo)
-            const filtered = stored.filter(entry => !(entry.id === item.id && entry.type === item.type));
+            const id = String(item.id);
+            const type = String(item.type || 'featured');
 
-            // Coloca o novo no topo
-            filtered.unshift(item);
+            const filtered = stored.filter(entry =>
+                !(String(entry.id) === id && String(entry.type || 'featured') === type)
+            );
 
-            // Limita a 6
-            const updated = filtered.slice(0, 8);
-            localStorage.setItem(key, JSON.stringify(updated));
+            filtered.unshift({
+                id: id,
+                type: type,
+                title: item.title || '',
+                artist: item.artist || '',
+                image: item.image || ''
+            });
+
+            localStorage.setItem(key, JSON.stringify(filtered.slice(0, 8)));
 
             renderRecentlyPlayed();
         }
 
-        // Funções de renderização allInstrumentals
+        // ===============================
+        // FUCTION ALL INSTRUMENTALS
+        // ===============================
         function renderAllInstrumental() {
             const $container = $('#allInstrumentals');
             if (!$container.length) return;
@@ -988,7 +1024,9 @@ módulos do sistema após o DOM estar pronto.
             });
         }
 
-        // Funções de renderização allDjs
+        // ===============================
+        // FUCTION ALL DJS
+        // ===============================
         function renderAllDjs() {
             const $container = $('#allDjs');
             if (!$container.length) return;
@@ -1034,7 +1072,9 @@ módulos do sistema após o DOM estar pronto.
             });
         }
 
-        // Funções de renderização allMusics
+        // ===============================
+        // FUCTION ALL MUSICS
+        // ===============================
         function renderMusics() {
             const $container = $('#allMusics');
             if (!$container.length) return;
@@ -1093,7 +1133,9 @@ módulos do sistema após o DOM estar pronto.
             });
         }
 
-        // Funções de renderização allAlbums
+        // ===============================
+        // FUCTION ALL ALBUMS
+        // ===============================
         let albumsData = [];
         let albumsVisible = 0;
         const albumsPerLoad = 12;
@@ -1124,7 +1166,7 @@ módulos do sistema após o DOM estar pronto.
 
             // cria botão
             $container.after(`
-				<div class="align-center" style="margin-top:50px;">
+				<div class="align-center" style="margin: 3em 0 6em 0;">
 					<button id="loadMoreAlbums" class="button loadmore large">
 						Carregar mais
 					</button>
@@ -1290,7 +1332,7 @@ módulos do sistema após o DOM estar pronto.
 
             if (!$btn.length) {
                 $('#allArtists').after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreArtists" class="button loadmore large">Carregar mais</button>
 					</div>
 				`);
@@ -1308,68 +1350,68 @@ módulos do sistema após o DOM estar pronto.
         $(document).on('click', '#loadMoreArtists', function() {
             loadMoreArtists();
         });
-		
-// =====================================================
-// Funções de renderização suballAlbums dos artistas
-// =====================================================
-	function renderSubAlbumsByArtist(artist) {
 
-		// NORMALIZADOR (resolve bugs de comparação)
-		const normalize = str => (str || '').toLowerCase().trim();
+        // =====================================================
+        // Funções de renderização suballAlbums dos artistas
+        // =====================================================
+        function renderSubAlbumsByArtist(artist) {
 
-		const allAlbums = [
-			...(currentData.albums || []),
-			...(currentData.singles || []),
-			...(currentData.vinyls || []),
-			...(currentData.featured || [])
-		]
-		.slice()
-		.sort((a, b) => (b.id || 0) - (a.id || 0))
-		.slice(0, 5000);
+            // NORMALIZADOR (resolve bugs de comparação)
+            const normalize = str => (str || '').toLowerCase().trim();
 
-		// FILTRO CORRIGIDO
-		const albums = allAlbums.filter(album =>
-			album && normalize(album.artist) === normalize(artist)
-		);
+            const allAlbums = [
+                    ...(currentData.albums || []),
+                    ...(currentData.singles || []),
+                    ...(currentData.vinyls || []),
+                    ...(currentData.featured || [])
+                ]
+                .slice()
+                .sort((a, b) => (b.id || 0) - (a.id || 0))
+                .slice(0, 5000);
 
-		const $container = $('#suballAlbums');
-		const $title = $('#subalbumsTitle');
+            // FILTRO CORRIGIDO
+            const albums = allAlbums.filter(album =>
+                album && normalize(album.artist) === normalize(artist)
+            );
 
-		// NOVOS ELEMENTOS (layout artista)
-		const $artistName = $('#artistName');
-		const $artistImage = $('#artistImage');
+            const $container = $('#suballAlbums');
+            const $title = $('#subalbumsTitle');
 
-		if (!$container.length || !$title.length) return;
+            // NOVOS ELEMENTOS (layout artista)
+            const $artistName = $('#artistName');
+            const $artistImage = $('#artistImage');
 
-		// HEADER
-		$title.html(`Álbuns de <span class="artist-name">${artist}</span>`);
+            if (!$container.length || !$title.length) return;
 
-		// INFO ARTISTA
-		if ($artistName.length) {
-			$artistName.text(artist);
-		}
-	
-		// BIO
-		$('#artist-bio').text('Carregando biografia...');
-		loadArtistBioOnly(artist);
+            // HEADER
+            $title.html(`Álbuns de <span class="artist-name">${artist}</span>`);
 
-		// IMAGEM DO ARTISTA (usa primeiro álbum)
-		const firstAlbum = albums[0];
-		if ($artistImage.length && firstAlbum) {
-			$artistImage.attr('src', firstAlbum.image || '');
-		}
+            // INFO ARTISTA
+            if ($artistName.length) {
+                $artistName.text(artist);
+            }
 
-		// RENDER DOS ÁLBUNS (com chave única)
-		$container.html(albums.map(album => {
+            // BIO
+            $('#artist-bio').text('Carregando biografia...');
+            loadArtistBioOnly(artist);
 
-			let albumType = 'album';
+            // IMAGEM DO ARTISTA (usa primeiro álbum)
+            const firstAlbum = albums[0];
+            if ($artistImage.length && firstAlbum) {
+                $artistImage.attr('src', firstAlbum.image || '');
+            }
 
-			if ((currentData.singles || []).find(s => s.id === album.id)) albumType = 'singles';
-			else if ((currentData.albums || []).find(v => v.id === album.id)) albumType = 'albums';
-			else if ((currentData.vinyls || []).find(v => v.id === album.id)) albumType = 'vinyls';
-			else if ((currentData.featured || []).find(f => f.id === album.id)) albumType = 'featured';
+            // RENDER DOS ÁLBUNS (com chave única)
+            $container.html(albums.map(album => {
 
-			return `
+                let albumType = 'album';
+
+                if ((currentData.singles || []).find(s => s.id === album.id)) albumType = 'singles';
+                else if ((currentData.albums || []).find(v => v.id === album.id)) albumType = 'albums';
+                else if ((currentData.vinyls || []).find(v => v.id === album.id)) albumType = 'vinyls';
+                else if ((currentData.featured || []).find(f => f.id === album.id)) albumType = 'featured';
+
+                return `
 			<div class="album-card md-ripples ripples-light" data-id="${album.id || ''}" data-type="${albumType}" data-key="${albumType}-${album.id}">
 				<article class="box post">
 					<div class="image fit" data-position="center">
@@ -1382,91 +1424,91 @@ módulos do sistema após o DOM estar pronto.
 				</article>
 			</div>
 			`;
-		}).join(''));
+            }).join(''));
 
-		// EVENTO CORRIGIDO (SEM BUG)
-		$container.off('click').on('click', '.album-card', function(e) {
-			e.preventDefault();
-			
-			const key = $(this).attr('data-key');
-			
-			if (!key) return;
-			
-			const [type, id] = key.split('-');
-			
-			if (id && type) {
-				openPlayer(parseInt(id), type);
-			}
-		});
+            // EVENTO CORRIGIDO (SEM BUG)
+            $container.off('click').on('click', '.album-card', function(e) {
+                e.preventDefault();
 
-		// efeitos visuais (mantido)
-		setupBannerFillColorEvents('suballAlbums');
+                const key = $(this).attr('data-key');
 
-		// troca de aba
-		switchTab('subalbums');
-	}
+                if (!key) return;
 
-// =====================================================
-// BIO
-// =====================================================
-function loadArtistBioOnly(artist) {
+                const [type, id] = key.split('-');
 
-    const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=4959ac7ccf2055437d47a70303cc0ee0&format=json`;
+                if (id && type) {
+                    openPlayer(parseInt(id), type);
+                }
+            });
 
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
+            // efeitos visuais (mantido)
+            setupBannerFillColorEvents('suballAlbums');
 
-            const info = data.artist;
+            // troca de aba
+            switchTab('subalbums');
+        }
 
-            if (!info) {
-                $('#artist-bio').text(`Sem informações para ${artist}`);
-                return;
-            }
+        // =====================================================
+        // BIO
+        // =====================================================
+        function loadArtistBioOnly(artist) {
 
-            let bio = info.bio?.content || info.bio?.summary || '';
+            const url = `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(artist)}&api_key=4959ac7ccf2055437d47a70303cc0ee0&format=json`;
 
-            bio = bio
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+
+                    const info = data.artist;
+
+                    if (!info) {
+                        $('#artist-bio').text(`Sem informações para ${artist}`);
+                        return;
+                    }
+
+                    let bio = info.bio?.content || info.bio?.summary || '';
+
+                    bio = bio
+                        .replace(/<a.*?>.*?<\/a>/g, '')
+                        .replace(/User-contributed text[\s\S]*$/i, '')
+                        .replace(/Read more[\s\S]*$/i, '')
+                        .trim();
+
+                    if (!bio || bio.length < 20) {
+                        bio = `Informações sobre ${artist} não disponíveis no momento.`;
+                    }
+
+                    renderBioReadMore(formatBio(bio));
+
+                })
+                .catch(() => {
+                    $('#artist-bio').text(`Não foi possível carregar a biografia de ${artist}`);
+                });
+        }
+
+        function formatBio(text) {
+
+            if (!text) return '';
+
+            return text
                 .replace(/<a.*?>.*?<\/a>/g, '')
                 .replace(/User-contributed text[\s\S]*$/i, '')
                 .replace(/Read more[\s\S]*$/i, '')
+                .replace(/\n/g, '<br>')
                 .trim();
+        }
 
-            if (!bio || bio.length < 20) {
-                bio = `Informações sobre ${artist} não disponíveis no momento.`;
-            }
+        // =====================================================
+        // LER MAIS BIO
+        // =====================================================
 
-            renderBioReadMore(formatBio(bio));
+        function renderBioReadMore(bio) {
 
-        })
-        .catch(() => {
-            $('#artist-bio').text(`Não foi possível carregar a biografia de ${artist}`);
-        });
-}
+            const limit = 300;
+            const isLong = bio.length > limit;
+            const shortBio = isLong ? bio.substring(0, limit) + '...' : bio;
 
-function formatBio(text) {
-
-    if (!text) return '';
-
-    return text
-        .replace(/<a.*?>.*?<\/a>/g, '')
-        .replace(/User-contributed text[\s\S]*$/i, '')
-        .replace(/Read more[\s\S]*$/i, '')
-        .replace(/\n/g, '<br>')
-        .trim();
-}
-
-// =====================================================
-// LER MAIS BIO
-// =====================================================
-
-function renderBioReadMore(bio) {
-
-    const limit = 300;
-    const isLong = bio.length > limit;
-    const shortBio = isLong ? bio.substring(0, limit) + '...' : bio;
-
-    $('#artist-bio').html(`
+            $('#artist-bio').html(`
 		<span class="bio-text">${shortBio}</span>
 
         ${isLong ? `
@@ -1476,51 +1518,53 @@ function renderBioReadMore(bio) {
         ` : ''}
     `);
 
-    $('#artist-bio')
-        .data('full-bio', bio)
-        .data('short-bio', shortBio);
-}
+            $('#artist-bio')
+                .data('full-bio', bio)
+                .data('short-bio', shortBio);
+        }
 
-// =====================================================
-// EVENTO LER MAIS / LER MENOS
-// =====================================================
+        // =====================================================
+        // EVENTO LER MAIS / LER MENOS
+        // =====================================================
 
-$(document).on('click', '.bio-read-more', function () {
+        $(document).on('click', '.bio-read-more', function() {
 
-    const $btn = $(this);
-    const $box = $('#artist-bio');
-    const $text = $box.find('.bio-text');
+            const $btn = $(this);
+            const $box = $('#artist-bio');
+            const $text = $box.find('.bio-text');
 
-    const fullBio = $box.data('full-bio');
-    const shortBio = $box.data('short-bio');
+            const fullBio = $box.data('full-bio');
+            const shortBio = $box.data('short-bio');
 
-    const opened = $btn.hasClass('opened');
+            const opened = $btn.hasClass('opened');
 
-    if (opened) {
-		$text.html(shortBio);
-        $btn.removeClass('opened').text('Ler mais');
-    } else {
-		$text.html(fullBio);
-        $btn.addClass('opened').text('Ler menos');
-    }
+            if (opened) {
+                $text.html(shortBio);
+                $btn.removeClass('opened').text('Ler mais');
+            } else {
+                $text.html(fullBio);
+                $btn.addClass('opened').text('Ler menos');
+            }
 
-});
+        });
 
 
-// =====================================================
-// ESCAPE HTML
-// =====================================================
+        // =====================================================
+        // ESCAPE HTML
+        // =====================================================
 
-function escapeHtml(text) {
-    return String(text || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-}
+        function escapeHtml(text) {
+            return String(text || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
-        // Funções de renderização allVinyls
+        // ===============================
+        // FUCTION ALL VINYLS
+        // ===============================
         let vinylsData = [];
         let vinylsVisible = 0;
         const vinylsPerLoad = 12;
@@ -1549,7 +1593,7 @@ function escapeHtml(text) {
             // botão load more
             if (!$('#loadMoreVinyls').length) {
                 $container.after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreVinyls" class="button loadmore large">
 							Carregar mais
 						</button>
@@ -1608,7 +1652,9 @@ function escapeHtml(text) {
             }
         }
 
-        // Funções de renderização allSingles
+        // ===============================
+        // FUCTION ALL SINGLES
+        // ===============================
         let singlesData = [];
         let singlesVisible = 0;
         const singlesPerLoad = 12;
@@ -1637,7 +1683,7 @@ function escapeHtml(text) {
             // cria botão se não existir
             if (!$('#loadMoreSingles').length) {
                 $container.after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreSingles" class="button loadmore large">
 							Carregar mais
 						</button>
@@ -1696,7 +1742,9 @@ function escapeHtml(text) {
             }
         }
 
-        // Funções de renderização allPlaylists
+        // ===============================
+        // FUCTION ALL PLAYLISTS
+        // ===============================
         function renderAllPlaylists() {
             const $container = $('#allPlaylists');
             if (!$container.length) return;
@@ -1758,7 +1806,9 @@ function escapeHtml(text) {
             }, 50);
         }
 
-        // Funções de renderização allTimeline
+        // ===============================
+        // FUCTION ALL TIMELINE
+        // ===============================
         function renderTimeline() {
             const $container = $('#allTimeline');
             if (!$container.length) return;
@@ -1955,7 +2005,7 @@ function escapeHtml(text) {
 
             if (!$btn.length) {
                 $('#yearAlbumsList').after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreYearAlbums" class="button loadmore large">Carregar mais</button>
 					</div>
 				`);
@@ -1974,7 +2024,9 @@ function escapeHtml(text) {
             loadMoreYearAlbums();
         });
 
-        // Funções de renderização AllGenres
+        // ===============================
+        // FUCTION ALL GENRES
+        // ===============================
         function renderAllGenres() {
 
             const $container = $('#AllGenres');
@@ -2168,7 +2220,7 @@ function escapeHtml(text) {
 
             if (!$btn.length) {
                 $('#genresAlbumsList').after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreGenresAlbums" class="button loadmore large">Carregar mais</button>
 					</div>
 				`);
@@ -2187,6 +2239,9 @@ function escapeHtml(text) {
             loadMoreGenresAlbums();
         });
 
+        // ===============================
+        // ALL LABELS
+        // ===============================
         // Labels List
         // 1. VARIÁVEIS
         let allLabelsData = [];
@@ -2272,7 +2327,7 @@ function escapeHtml(text) {
 
             if (!$btn.length) {
                 $('#labelsList').after(`
-					<div class="align-center" style="margin-top:50px;">
+					<div class="align-center" style="margin: 3em 0 6em 0;">
 						<button id="loadMoreLabels" class="button loadmore large">Carregar mais</button>
 					</div>
 				`);
@@ -2293,8 +2348,8 @@ function escapeHtml(text) {
 
         // 🔹 função de re-renderização dos artist label
         function renderLabelDetails(labelName) {
-			
-			updatePageTitle(labelName, 'label'); // 👈 AQUI
+
+            updatePageTitle(labelName, 'label'); // 👈 AQUI
 
             const $title = $('#labelTitle');
             const $container = $('#labelArtistsList');
@@ -2344,7 +2399,364 @@ function escapeHtml(text) {
             });
         }
 
-        // Função openPlayer
+        // ===============================
+        // YT VIDEOS
+        // ===============================
+        function loadVideos(query = 'eurodance 90s') {
+            const API = 'https://eurodance-api.onrender.com';
+
+            fetch(`${API}/youtube?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.items || !data.items.length) {
+                        $('#allVideos').html('<p>Nenhum vídeo encontrado.</p>');
+                        return;
+                    }
+
+                    renderVideos(data.items);
+                })
+                .catch(err => {
+                    console.error('Erro YouTube:', err);
+                    $('#allVideos').html('<p>Erro ao carregar vídeos.</p>');
+                });
+        }
+
+        function renderVideos(items) {
+            const $container = $('#allVideos');
+            if (!$container.length) return;
+
+            $container.html(items.map(video => {
+                const videoId = video.id.videoId;
+                const title = video.snippet.title;
+                const thumb = video.snippet.thumbnails.medium.url;
+
+                return `
+            <div class="video-card"
+                 data-video-id="${videoId}"
+                 data-title="${escapeHtml(title)}"
+                 data-thumb="${thumb}">
+
+                <article class="box post">
+                    <div class="content">
+                        <div class="image fit md-ripples ripples-light" data-position="center">
+                            <img src="${thumb}" alt="${escapeHtml(title)}" loading="lazy">
+                        </div>
+
+                        <ul class="icons">
+                            <li class="alt1">
+                                <button type="button" class="icon solid fa-play"></button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <header class="align-left">
+                        <h3 class="album-title">${escapeHtml(title)}</h3>
+                    </header>
+                </article>
+            </div>
+        `;
+            }).join(''));
+        }
+
+        function openPlayerYoutube(videoId, title, thumb, artist = 'YouTube') {
+
+            const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&playsinline=1`;
+
+            $('.player-embed').html(`
+        <iframe 
+            src="${embedUrl}"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    `);
+
+            $('#playerImage').attr('src', thumb || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+            $('#playerTitle').text(title || 'YouTube Video');
+            $('#playerArtist').text('YouTube');
+
+            $('#detailArtist').text('YouTube');
+            $('#detailYear').text('');
+            $('#detailLabel').text('');
+            $('#detailCountry').text('');
+            $('#detailFormat').text('Video');
+            $('#detailGenre').text('');
+            $('#detailStyle').text('');
+
+            $('#player-bar').addClass('opened active').fadeIn(200);
+            $('#player-page').addClass('showmore').fadeIn(200);
+
+            saveToRecentlyPlayed({
+                id: videoId,
+                type: 'youtube',
+                title: title || 'YouTube Video',
+                artist: artist || 'YouTube',
+                image: thumb || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
+            });
+
+            if (artist && artist !== 'YouTube') {
+                showRelatedAlbums(artist, videoId, 'youtube');
+            }
+        }
+
+        function getRandomArtist() {
+
+            const counts = {};
+
+            (window.mockFeatured || []).forEach(item => {
+
+                if (!item.artist) return;
+
+                counts[item.artist] = (counts[item.artist] || 0) + 1;
+
+            });
+
+            const artists = Object.entries(counts)
+                .filter(([artist, count]) => count >= 2)
+                .map(([artist]) => artist);
+
+            if (!artists.length) return 'eurodance';
+
+            return artists[
+                Math.floor(Math.random() * artists.length)
+            ];
+        }
+
+        function renderAllVideos() {
+
+            const artist = getRandomArtist();
+
+            $('#videosTitle').html(
+                `Vídeos de <span class="artist-name">${artist}</span>`
+            );
+
+            loadVideos(`${artist} eurodance`);
+
+            renderVideosArtistAlbums(artist);
+        }
+
+        function renderVideosArtistAlbums(artist) {
+            const $container = $('#videosArtistAlbums');
+            const $title = $('#videosArtistAlbumsTitle');
+
+            if (!$container.length) return;
+
+            const clean = text => String(text || '').toLowerCase().trim();
+
+            const items = (window.mockFeatured || []).filter(item =>
+                clean(item.artist) === clean(artist)
+            );
+
+            $title.html(`Músicas de <span class="artist-name">${artist}</span>`);
+
+            if (!items.length) {
+                $container.html('<p>Nenhuma música encontrada.</p>');
+                return;
+            }
+
+            $container.html(items.map(item => `
+        <div class="album-card"
+             data-id="${item.id}"
+             data-type="${item.type || 'featured'}">
+
+            <article class="box post">
+                <div class="content">
+                    <div class="image fit md-ripples ripples-light">
+                        <img src="${item.image || ''}" alt="${escapeHtml(item.title || '')}" loading="lazy">
+                    </div>
+
+                    <ul class="icons">
+                        <li class="alt1">
+                            <button type="button" class="icon solid fa-play"></button>
+                        </li>
+                    </ul>
+                </div>
+
+                <header class="align-left">
+                    <h3 class="album-artist">${escapeHtml(item.artist || '')}</h3>
+                    <p class="album-title">${escapeHtml(item.title || '')}</p>
+                </header>
+            </article>
+        </div>
+    `).join(''));
+
+            $container.find('.avg').fillColor({
+                type: 'avg'
+            });
+
+            setupBannerFillColorEvents('videosArtistAlbums');
+        }
+
+        // Clique nos vídeos do YouTube
+        $(document)
+            .off('click', '.video-card')
+            .on('click', '.video-card', function(e) {
+                e.preventDefault();
+
+                const videoId = $(this).attr('data-video-id');
+                const title = $(this).attr('data-title');
+                const thumb = $(this).attr('data-thumb');
+                const artist = $(this).attr('data-artist') || $('#videosTitle .artist-name, #homeVideosTitle .artist-name').first().text() || 'YouTube';
+
+                openPlayerYoutube(videoId, title, thumb, artist);
+            });
+
+        // Clique nos álbuns/músicas abaixo dos vídeos
+        $(document)
+            .off('click', '#videosArtistAlbums .album-card')
+            .on('click', '#videosArtistAlbums .album-card', function(e) {
+                e.preventDefault();
+
+                const id = $(this).attr('data-id');
+                const type = $(this).attr('data-type');
+
+                openPlayer(id, type);
+            });
+
+        // ===============================
+        // HOME VIDEOS
+        // ===============================
+        function renderHomeVideos() {
+
+            const artist = getRandomArtist();
+
+            $('#homeVideosTitle').html(
+                `Vídeos de <span class="artist-name">${artist}</span>`
+            );
+
+            loadHomeVideos(`${artist} eurodance`);
+        }
+
+
+        // Load Home Videos
+        function loadHomeVideos(query) {
+
+            const API = 'https://eurodance-api.onrender.com';
+
+            fetch(`${API}/youtube?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+
+                    if (!data.items || !data.items.length) {
+
+                        $('#homeVideos').html(
+                            '<p>Nenhum vídeo encontrado.</p>'
+                        );
+
+                        return;
+                    }
+
+                    renderHomeVideosSlider(data.items);
+
+                })
+                .catch(err => {
+
+                    console.error('Erro Home Videos:', err);
+
+                    $('#homeVideos').html(
+                        '<p>Erro ao carregar vídeos.</p>'
+                    );
+
+                });
+        }
+
+
+        // Render Home Videos Slider
+        function renderHomeVideosSlider(items) {
+
+            const $container = $('#homeVideos');
+
+            if (!$container.length) return;
+
+            // destroy slick
+            if ($container.hasClass('slick-initialized')) {
+                $container.slick('unslick');
+            }
+
+            $container.html(items.map(video => {
+
+                const videoId = video.id.videoId;
+                const title = video.snippet.title;
+                const thumb = video.snippet.thumbnails.medium.url;
+
+                return `
+            <div class="video-card"
+                 data-video-id="${videoId}"
+                 data-title="${escapeHtml(title)}"
+                 data-thumb="${thumb}">
+
+                <article class="box post">
+
+                    <div class="content">
+
+                        <div class="image fit md-ripples ripples-light" data-position="center">
+                            <img src="${thumb}" alt="${escapeHtml(title)}" loading="lazy">
+                        </div>
+
+                        <ul class="icons">
+                            <li>
+                                <button type="button" class="icon solid fa-play"></button>
+                            </li>
+                        </ul>
+
+                    </div>
+
+                    <header class="align-left">
+                        <h3 class="album-title">
+                            ${escapeHtml(title)}
+                        </h3>
+                    </header>
+
+                </article>
+            </div>
+        `;
+
+            }).join(''));
+
+            $container.slick({
+                focusOnSelect: true,
+                infinite: true,
+                slidesToShow: 5,
+                slidesToScroll: 1,
+                speed: 300,
+
+                appendArrows: $('#homeVideos-slick-arrow'),
+
+                nextArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-right md-ripples ripples-light"></button></li></ul>',
+
+                prevArrow: '<ul class="icons"><li><button type="button" class="icon solid fa-chevron-left md-ripples ripples-light"></button></li></ul>',
+
+                responsive: [{
+                        breakpoint: 1280,
+                        settings: {
+                            slidesToShow: 5
+                        }
+                    },
+                    {
+                        breakpoint: 980,
+                        settings: {
+                            slidesToShow: 4
+                        }
+                    },
+                    {
+                        breakpoint: 736,
+                        settings: {
+                            slidesToShow: 3
+                        }
+                    },
+                    {
+                        breakpoint: 480,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    }
+                ]
+            });
+        }
+
+        // ===============================
+        // FUCTION OPEN PLAYER
+        // ===============================
         window.openPlayer = function(id) {
 
             const item = (currentData.featured || [])
@@ -2354,9 +2766,9 @@ function escapeHtml(text) {
                 console.warn('❌ Item não encontrado:', id);
                 return;
             }
-			
-			// 🧠 AQUI 👇 (POSIÇÃO CERTA)
-			updatePageTitle(item, 'song');
+
+            // 🧠 AQUI 👇 (POSIÇÃO CERTA)
+            updatePageTitle(item, 'song');
 
             console.log('🎵 PLAYER:', item);
 
@@ -2415,73 +2827,116 @@ function escapeHtml(text) {
             // Extras
             showRelatedAlbums(item.artist, id);
             saveToRecentlyPlayed({
-                id,
-                type: 'featured'
+                id: item.id,
+                type: item.type || 'featured'
+            });
+            saveToRecentlyPlayed({
+                id: videoId,
+                type: 'youtube',
+                title: title || 'YouTube Video',
+                artist: 'YouTube',
+                image: thumb || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`
             });
         };
 
-        // Funções de renderização relatedAlbums
-        function showRelatedAlbums(artist, currentId) {
+        // ===============================
+        // FUCTION RELATED ALBUMS
+        // ===============================
+        function showRelatedAlbums(artist, currentId, currentType = '') {
             const $container = $('#relatedAlbums');
             const $title = $('#relatedArtistName');
 
             if (!$container.length || !$title.length) return;
 
-            const allItems = [
-                ...(currentData.albums || []),
-                ...(currentData.singles || []),
-                ...(currentData.vinyls || []),
-                ...(currentData.featured || []),
-                ...(currentData.playlists || []),
-                ...(currentData.djs || []),
-                ...(currentData.instrumental || [])
-            ];
+            const normalize = text => String(text || '').toLowerCase().trim();
 
-            // Todos os álbuns do artista
+            const allItemsRaw = window.mockFeatured || currentData.featured || [];
+
+            const seen = new Set();
+
+            const allItems = allItemsRaw.filter(item => {
+                if (!item) return false;
+
+                const key = [
+                    normalize(item.artist),
+                    normalize(item.title || item.name),
+                    normalize(item.embedUrl)
+                ].join('|');
+
+                if (seen.has(key)) return false;
+
+                seen.add(key);
+                return true;
+            });
+
             const artistAlbums = allItems
-                .filter(item => item.artist === artist)
+                .filter(item => normalize(item.artist) === normalize(artist))
                 .sort((a, b) => {
-                    if (a.id === currentId) return -1; // joga pra cima
-                    if (b.id === currentId) return 1;
-                    return (b.id || 0) - (a.id || 0); // mantém ordenação por id
+                    const aCurrent =
+                        String(a.id) === String(currentId) &&
+                        String(a.type || 'featured') === String(currentType || a.type || 'featured');
+
+                    const bCurrent =
+                        String(b.id) === String(currentId) &&
+                        String(b.type || 'featured') === String(currentType || b.type || 'featured');
+
+                    if (aCurrent) return -1;
+                    if (bCurrent) return 1;
+
+                    return String(b.id).localeCompare(String(a.id));
                 });
 
-            $title.html(`Mais de <span class="artist-name">${artist}</span>`);
+            $title.html(`Mais de <span class="artist-name">${escapeHtml(artist || '')}</span>`);
 
-            if (artistAlbums.length === 0) {
+            if (!artistAlbums.length) {
                 $container.html('<p>Nenhum álbum encontrado.</p>');
                 return;
             }
 
             $container.html(artistAlbums.map(album => `
-				<div class="album-card ${album.id === currentId ? 'current' : ''}" data-id="${album.id}" data-type="featured">
-					<article class="box post avg md-ripples ripples-light">
-						<div class="content">
-							<div class="image fit" data-position="center">
-								<img src="${album.image}" alt="${escapeHtml(album.title)}" loading="lazy">
-							</div>
-							<ul class="icons">
-								<li class="alt1"><button type="button" class="icon solid fa-play"></button></li>
-								<li class="alt2"><button type="button" class="icon wave"><span></span><span></span><span></span></span></button></li>
-							</ul>
-						</div>
-						<header class="align-left">
-							<h3 class="album-artist">${escapeHtml(album.artist)}</h3>
-							<p class="album-title">${escapeHtml(album.title)}</p>
-						</header>
-					</article>
-				</div>
-			`).join(''));
+        <div class="album-card ${
+            String(album.id) === String(currentId) &&
+            String(album.type || 'featured') === String(currentType || album.type || 'featured')
+                ? 'current'
+                : ''
+        }"
+             data-id="${album.id}"
+             data-type="${album.type || 'featured'}">
 
-            // Aplica fillColor apenas no container atual
+            <article class="box post avg md-ripples ripples-light">
+                <div class="content">
+                    <div class="image fit" data-position="center">
+                        <img src="${album.image || ''}" alt="${escapeHtml(album.title || album.name || '')}" loading="lazy">
+                    </div>
+
+                    <ul class="icons">
+                        <li class="alt1">
+                            <button type="button" class="icon solid fa-play"></button>
+                        </li>
+                        <li class="alt2">
+                            <button type="button" class="icon wave">
+                                <span></span><span></span><span></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <header class="align-left">
+                    <h3 class="album-artist">${escapeHtml(album.artist || '')}</h3>
+                    <p class="album-title">${escapeHtml(album.title || album.name || '')}</p>
+                </header>
+            </article>
+        </div>
+    `).join(''));
+
             $container.find('.avg').fillColor({
                 type: 'avg'
             });
 
-            // Reaplica eventos de clique
-            $container.find('.album-card').on('click', function() {
-                const id = parseInt($(this).data('id'));
-                const type = $(this).data('type');
+            $container.find('.album-card').off('click').on('click', function() {
+                const id = $(this).attr('data-id');
+                const type = $(this).attr('data-type');
+
                 openPlayer(id, type);
             });
         }
@@ -2643,8 +3098,9 @@ function escapeHtml(text) {
                 });
         }
 
-        // Load Progress Bar
-
+        // ===============================
+        // FUCTION LOAD PROGRESS BAR ALBUMS
+        // ===============================
         // Cria progress-bar se não existir
         if (!$('#progress-bar').length) {
             $('body').prepend('<div id="progress-bar"></div>');
