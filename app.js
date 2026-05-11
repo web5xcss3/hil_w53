@@ -1,63 +1,11 @@
 /*
-====================================================
+===========================================================================
  PLAY 90 MUSIC - APP.JS (UI & SPA STRUCTURE) BY WEB5XCSS3 - W53 DEVELOPMENT
-====================================================
-
- Descrição:
-Arquivo principal responsável pela estrutura da interface
-e comportamento SPA (Single Page Application).
-
-Define todos os componentes visuais e controla a navegação,
-eventos globais e renderização dinâmica do app.
-
-----------------------------------------------------
- COMPONENTES
-----------------------------------------------------
-- Header() → topo com logo, busca e ações
-- Menu() → navegação lateral (tabs)
-- Banner() → background dinâmico
-- HomeContent() → conteúdo principal (home)
-- Outras abas → artistas, timeline, gêneros, etc
-- Player → player expandido + barra fixa
-
-----------------------------------------------------
- SISTEMA SPA
-----------------------------------------------------
-- Navegação via [data-tab]
-- Troca de conteúdo sem reload
-- Rehidratação da UI (hydrateUI)
-- Controle de estado via classes CSS
-
-----------------------------------------------------
- FUNCIONALIDADES
-----------------------------------------------------
-- Renderização dinâmica de conteúdo
-- Sistema de busca otimizado (debounce + index)
-- Eventos globais organizados (namespaces)
-- Integração com plugins (Slick, FillColor)
-- Player interativo com iframe
-
-----------------------------------------------------
- PERFORMANCE
-----------------------------------------------------
-- RenderRoot executado apenas uma vez
-- Eventos desacoplados e reaproveitáveis
-- Plugins inicializados sob demanda
-- ScrollWatch protegido contra duplicação
-
-----------------------------------------------------
- OBSERVAÇÕES
-----------------------------------------------------
-- Arquitetura modular (fácil manutenção)
-- Preparado para expansão (novas tabs e dados)
-- Compatível com carregamento dinâmico (.load)
-- Estrutura pensada para PWA
-
-====================================================
+===========================================================================
 */
 
 // =====================================================
-// 🧠 TITLE SYSTEM (SEO + SPA)
+// TITLE SYSTEM (SEO + SPA)
 // =====================================================
 window.BASE_TITLE = 'Play 90 Music';
 
@@ -184,29 +132,29 @@ window.updatePageTitle = function(data = null, type = '') {
             <!-- Destaque -->
 				<section class="wrapper style">
 					<header class="major">
-						<h2 id="featuredTitle">Destaque</h2>
+						<h2 id="featuredTitle"></h2>
 						<div class="slick-actions">
 							<div id="new-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
 					<div id="featuredAlbums" class="grid col-6"></div>
 				</section>
-            
-            <!-- Day Hits -->
+				
+			<!-- Videos Home -->
 				<section class="wrapper style">
 					<header class="major">
-						<h2 id="dailyHitTitle">Hits do Dia</h2>
+						<h2 id="homeVideosTitle"></h2>
 						<div class="slick-actions">
-							<div id="hits-slick-arrow" class="slick-arrows"></div>
+							<div id="homeVideos-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
-					<div id="dailyHit"></div>
+					<div id="homeVideos" class="grid col-6"></div>
 				</section>
             
             <!-- Day Titulos -->
 				<section class="wrapper style">
 					<header class="major">
-						<h2 id="dailyFeaturedTitle">Títulos do Dia</h2>
+						<h2 id="dailyFeaturedTitle"></h2>
 						<div class="slick-actions">
 							<div id="daily-slick-arrow" class="slick-arrows"></div>
 						</div>
@@ -217,7 +165,7 @@ window.updatePageTitle = function(data = null, type = '') {
             <!-- DJS -->
 				<section class="wrapper style">
 					<header class="major">
-						<h2 id="featuredDjsTitle">DJs em Destaque</h2>
+						<h2 id="featuredDjsTitle"></h2>
 						<div class="slick-actions">
 							<div id="djs-slick-arrow" class="slick-arrows"></div>
 						</div>
@@ -228,7 +176,7 @@ window.updatePageTitle = function(data = null, type = '') {
             <!-- Recent -->
 				<section class="wrapper style">
 					<header class="major">
-						<h2 id="recentlyPlayedTitle">Recentemente Tocadas</h2>
+						<h2 id="recentlyPlayedTitle"></h2>
 						<div class="slick-actions">
 							<div id="recentlyPlayed-slick-arrow" class="slick-arrows"></div>
 						</div>
@@ -279,6 +227,10 @@ function suballAlbumsContent() {
 				<header="align-left">
 					<h2 id="artistName"></h2>
 					<p id="artist-bio"></p>
+					<ul class="actions fit align-middle">
+						<li><button type="button" id="" class="button primary md-ripples ripples-light">Play Music</button></li>
+						<li><button type="button" id="" class="button md-ripples ripples-light">Play Videos</button></li>
+					</ul>
 				</header>
 			</div>
 
@@ -304,15 +256,31 @@ function suballAlbumsContent() {
 		return `
 		<!-- Timeline Tab -->
 			<section id="timeline" class="tab-content">
-				<header class="major">
-					<h2 id="timelineTitle"></h2>
-					<div class="slick-actions">
-						<div id="timeline-slick-arrow" class="slick-arrows"></div>
-					</div>
-				</header>
-				<div id="allTimeline"></div>
-							
-				<div id="genres" class="">
+				
+				<!-- All Timeline -->
+				<div class="wrapper style">
+					<header class="major">
+						<h2 id="timelineTitle"></h2>
+						<div class="slick-actions">
+							<div id="timeline-slick-arrow" class="slick-arrows"></div>
+						</div>
+					</header>
+					<div id="allTimeline"></div>
+				</div>
+				
+				<!-- Day Hits -->
+				<div class="wrapper style">
+					<header class="major">
+						<h2 id="dailyHitTitle"></h2>
+						<div class="slick-actions">
+							<div id="hits-slick-arrow" class="slick-arrows"></div>
+						</div>
+					</header>
+					<div id="dailyHit"></div>
+				</div>
+				
+				<!-- Genres -->
+				<div id="genres" class="wrapper style">
 					<header class="major">
 						<h2 id="genresTitle"></h2>
 					</header>
@@ -471,20 +439,24 @@ function suballAlbumsContent() {
 function videosContent() {
     return `
         <section id="videos" class="tab-content">
-            <header class="major">
-                <h2 id="videosTitle">Vídeos</h2>
-				<ul class="actions">
-					<li><button type="button" id="backToVideos" class="button icon solid fa-arrow-left md-ripples ripples-light">Voltar</button></li>
-				</ul>
-            </header>
+			<div class="yt-videos wrapper style">
+				<header class="major">
+					<h2 id="videosTitle">Vídeos</h2>
+					<ul class="actions">
+						<li><button type="button" id="backToVideos" class="button icon solid fa-arrow-left md-ripples ripples-light">Voltar</button></li>
+					</ul>
+				</header>
 
-            <div id="allVideos" class="grid col-6"></div>
+				<div id="allVideos" class="grid col-6"></div>
+			</div>
+			
+			<div class="yt-videos-artist-albums wrapper style">
+				<header class="major align-top">
+					<h2 id="videosArtistAlbumsTitle"></h2>
+				</header>
 
-            <header class="major align-top">
-                <h2 id="videosArtistAlbumsTitle"></h2>
-            </header>
-
-            <div id="videosArtistAlbums" class="grid col-6"></div>
+				<div id="videosArtistAlbums" class="grid col-6"></div>
+			</div>
         </section>
     `;
 }
@@ -841,6 +813,12 @@ function initGlobalEvents() {
                 $('#searchDropdown').hide();
             }
         });
+		
+	$(document)
+    .off('click', '[data-tab="home"]')
+    .on('click', '[data-tab="home"]', function() {
+        renderHomeVideos();
+    });
 
 }
 
@@ -1000,6 +978,7 @@ function initRenderFunctions() {
     safeCall(renderDailyFeaturedTitles);
     safeCall(renderAllGenres);
 	safeCall(renderAllVideos);
+	safeCall(renderHomeVideos);
 }
 
 // =====================================================
