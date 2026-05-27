@@ -290,8 +290,8 @@
 
 	.grid {
 		display: grid;
-		column-gap: 2em;
-		row-gap: 2em;
+		column-gap: 1em;
+		row-gap: 1em;
 	}
 
 		.col-1 {
@@ -495,7 +495,7 @@
 		}
 
 		header.major h2 {
-			font-size: 2.35em;
+			font-size: 2em;
 			margin: 0;
 		}
 
@@ -538,41 +538,6 @@
 			-ms-align-items: -ms-flex-start;
 			align-items: flex-start;
 		}
-		
-		/* ======================================
-   ACTION MENU SCROLL X
-====================================== */
-
-#action {
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-}
-
-#action::-webkit-scrollbar {
-    display: none;
-}
-
-#action .actions {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 0.75rem;
-    width: max-content;
-    min-width: 100%;
-    margin: 0;
-    padding: 0 0 0.5rem;
-    list-style: none;
-}
-
-#action .actions li {
-    flex: 0 0 auto;
-}
-
-#action .actions .button {
-    white-space: nowrap;
-}
 
 /* Form */
 
@@ -1676,6 +1641,148 @@
 			.slick-arrows ul.icons li button {
 				border: solid 1px rgba(255, 255, 255, 0.2);
 			}
+			
+	#action .slick-list, #action .slick-slide {
+		margin: 0;
+	}
+	
+.daily-hero-card {
+    position: relative;
+    min-height: 280px;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 42px;
+    background: #080812;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+}
+
+.daily-hero-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(5,5,15,.95) 0%, rgba(5,5,15,.75) 38%, rgba(5,5,15,.25) 70%),
+        radial-gradient(circle at right, rgba(0,180,255,.35), transparent 45%);
+    z-index: 1;
+}
+
+.daily-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 50%;
+}
+
+.daily-badge {
+    color: #eb5c9a;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.daily-hero-content h2 {
+    margin: 10px 0;
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: .95;
+    color: #fff;
+    text-wrap: balance;
+}
+
+.daily-hero-content p {
+    color: rgba(255,255,255,.72);
+    font-size: 1rem;
+    max-width: 320px;
+}
+
+.daily-play {
+    margin-top: 18px;
+    border: 0;
+    border-radius: 8px;
+    padding: 14px 28px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    background: linear-gradient(135deg, #ce0035, #81008d);
+    cursor: pointer;
+}
+
+.daily-hero-image {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50%;
+    height: 100%;
+}
+
+.daily-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    transition: transform .6s ease;
+}
+
+.daily-hero-card:hover .daily-hero-image img {
+    transform: scale(1.12);
+}
+
+.daily-hero-slide {
+    padding: 4px;
+}
+
+.daily-slider-wrap {
+    position: relative;
+}
+
+.daily-hero-nav {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    z-index: 1;
+    display: flex;
+    gap: 10px;
+}
+
+.daily-arrow {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.35);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.daily-arrow:hover {
+    transform: scale(1.08);
+    background: #eb5c9a;
+    border-color: rgba(255,0,180,.45);
+}
+
+@media (max-width: 736px) {
+    .daily-hero-card {
+        min-height: 420px;
+        padding: 28px;
+        align-items: flex-end;
+    }
+
+    .daily-hero-content {
+        max-width: 100%;
+    }
+
+    .daily-hero-image {
+        width: 100%;
+        opacity: .75;
+    }
+
+    .daily-hero-card::after {
+        background: linear-gradient(180deg, rgba(5,5,15,.25), rgba(5,5,15,.95));
+    }
+}
 
 /* Wrapper */
 
@@ -1684,11 +1791,11 @@
 	}
 
 		.wrapper.align-top {
-			padding-top: 10em;
+			padding-top: 8em;
 		}
 
 		.wrapper.style {
-			padding: 3em 0;
+			padding: 2em 0;
 		}
 
 			.wrapper.style:last-child {
@@ -1795,7 +1902,7 @@
 
 			#header .logo img {
 				display: block;
-				height: 2em;
+				height: 2.5em;
 			}
 			
 			body.is-menu-visible .logo ul.icons li button.icon {
@@ -2054,14 +2161,120 @@
 			
 		}
 		
+.loadmore-card .loadmore-post, 
+.loadmore-artist-card .loadmore-post, 
+.loadmore-singles-card .loadmore-post, 
+.loadmore-vinyls-card .loadmore-post,
+.loadmore-djs-card .loadmore-post,
+.loadmore-yearalbums-card .loadmore-post,
+.loadmore-genres-card .loadmore-post,
+.loadmore-labels-card .loadmore-post {
+    min-height: 222px;
+    height: 100%;
+    padding: 0 !important;
+    border-radius: 10px;
+    overflow: hidden;
+    background: linear-gradient(145deg, rgba(45, 10, 35, .85), rgba(8, 12, 24, .95));
+    border: 1px solid rgba(255, 255, 255, .08);
+    box-shadow: inset 0 0 40px rgba(255, 0, 120, .08);
+}
+
+.loadmore-card-button {
+    width: 100%;
+    height: 100%;
+    min-height: 222px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    cursor: pointer;
+}
+
+.loadmore-plus {
+    width: 76px;
+    height: 76px;
+    margin-bottom: 1.2rem;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 80, 170, .35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 2.2rem;
+	text-shadow: 0 0 15px #ff68b7;
+    box-shadow: 0 0 35px rgba(255, 0, 140, .25);
+}
+
+.loadmore-plus {
+    animation: pulseGlow 2.5s infinite;
+}
+
+@keyframes pulseGlow {
+
+    0% {
+        box-shadow: 0 0 10px rgba(255, 0, 140, .15);
+    }
+
+    50% {
+        box-shadow:
+            0 0 25px rgba(255, 0, 140, .35),
+            0 0 45px rgba(255, 0, 140, .15);
+    }
+
+    100% {
+        box-shadow: 0 0 10px rgba(255, 0, 140, .15);
+    }
+}
+
+.loadmore-card-button strong {
+    font-size: 1rem;
+    font-weight: 600;
+	color: #ffffff;
+}
+
+.loadmore-card-button small {
+    font-size: 1rem;
+    opacity: .65;
+}
+
+.loadmore-card:hover .loadmore-post, 
+.loadmore-artist-card:hover .loadmore-post, 
+.loadmore-singles-card:hover .loadmore-post, 
+.loadmore-vinyls-card:hover .loadmore-post,
+.loadmore-djs-card:hover .loadmore-post,
+.loadmore-yearalbums-card:hover .loadmore-post,
+.loadmore-genres-card:hover .loadmore-post,
+.loadmore-labels-card:hover .loadmore-post {
+    transform: translateY(-4px);
+    border-color: rgba(255, 90, 180, .35);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .35),
+                inset 0 0 45px rgba(255, 0, 140, .12);
+}
+
+.loadmore-card .loadmore-post, 
+.loadmore-artist-card .loadmore-post, 
+.loadmore-singles-card .loadmore-post, 
+.loadmore-vinyls-card .loadmore-post,
+.loadmore-djs-card .loadmore-post,
+.loadmore-yearalbums-card .loadmore-post,
+.loadmore-genres-card .loadmore-post,
+.loadmore-labels-card .loadmore-post {
+    transition: .3s ease;
+}
+		
 /* All Artistas */
 
-	#allArtists .box {
+	#allArtists .box, #topArtistsHome .box {
 		padding: 1em;
 		height: 100%;
+		border: solid 1px rgba(255,255,255,0.1);
 	}
 
-		#allArtists .box:before, #relatedAlbums .box:before {
+		#allArtists .box:before, #relatedAlbums .box:before, #topArtistsHome .box:before {
 			content: "";
 			position: absolute;
 			height: 100%;
@@ -2070,15 +2283,20 @@
 			width: 100%;
 		}
 		
-			#allArtists .box:before {
-				background-image: linear-gradient(to bottom, rgba(3, 3, 3, 0.1) 50%, #030303 150%);
+			#allArtists .box:before, #topArtistsHome .box:before {
+				background-image: linear-gradient(to bottom, rgba(3, 3, 3, 0.1) 0%, #030303 150%);
+				border-radius: 1em;
+			}
+			
+			#allArtists .box.post.loadmore-post:before {
+				background-image: none;
 			}
 			
 			#relatedAlbums .box:before {
 				background-color: rgba(0, 0, 0, 0.3);
 			}
 		
-		#allArtists .box header, #relatedAlbums .box header {
+		#allArtists .box header, #relatedAlbums .box header, #topArtistsHome .box header {
 			position: relative;
 			z-index: 1;
 		}
@@ -2101,7 +2319,7 @@
 			background-color: transparent;
 		}
 
-	#featuredAlbums .image.fit {
+	#featuredAlbums .image.fit, #homeVideos .image.fit {
 		padding-top: 65%;
 	}
 	
@@ -3018,6 +3236,10 @@
 			ul.icons li {
 				padding: 0 0.75em 0 0;
 			}
+			
+				ul.icons li .icon {
+					font-size: 1em;
+				}
 
 		/* Wrapper */
 
@@ -3027,6 +3249,10 @@
 
 				.wrapper.align-top {
 					padding-top: 1em;
+				}
+				
+				.wrapper.style {
+					padding: 1em 0;
 				}
 				
 		/* Header */
