@@ -140,9 +140,11 @@ window.updatePageTitle = function(data = null, type = '') {
 				
 			<!-- Day Titulos -->
 				<section class="wrapper style">
+					<!--
 					<header class="major">
 						<h2 id="dailyFeaturedTitle"></h2>
 					</header>
+					-->
 					<div class="daily-slider-wrap">
 						<div id="dailyFeaturedTitles"></div>
 						<div id="daily-slick-arrow" class="daily-hero-nav"></div>
