@@ -3290,7 +3290,7 @@
 					<p>Carregando...</p>
 				</div>
 			`);
-
+			
             const $iframe = $(`
 				<iframe
 					src="${item.embedUrl}"
