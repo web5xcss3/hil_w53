@@ -700,7 +700,7 @@
                     {
                         breakpoint: 480,
                         settings: {
-                            slidesToShow: 2
+                            slidesToShow: 1
                         }
                     }
                 ]
@@ -3284,40 +3284,58 @@
             // Iframe
             const $embedContainer = $('.player-embed');
 
-            $embedContainer.html(`
-				<div class="player-loading">
-					<span class="spinner"></span>
-					<p>Carregando...</p>
-				</div>
-			`);
-			
-            const $iframe = $(`
-				<iframe
-					src="${item.embedUrl}"
-					frameborder="0"
-					allow="autoplay; encrypted-media; clipboard-write; fullscreen"
-					allowfullscreen
-					loading="lazy"
-					referrerpolicy="no-referrer-when-downgrade"
-					scrolling="no">
-				</iframe>
-			`);
+            $embedContainer
+                .stop(true, true)
+                .show()
+                .html(`
+        <div class="player-loading">
+            <span class="spinner"></span>
+            <p>Carregando...</p>
+        </div>
+    `);
 
-            $iframe.on('load', function() {
-                $embedContainer.fadeOut(100, function() {
-                    $embedContainer.html($iframe).fadeIn(200);
-                });
+            const $iframe = $(`
+    <iframe
+        src="${item.embedUrl}"
+        frameborder="0"
+        allow="autoplay; encrypted-media; clipboard-write; fullscreen"
+        allowfullscreen
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        scrolling="no">
+    </iframe>
+`);
+
+            $iframe.css({
+                opacity: 0,
+                width: '100%',
+                display: 'block'
             });
 
-            $iframe.css('opacity', 0);
+            let iframeLoaded = false;
+
+            function showIframe() {
+                if (iframeLoaded) return;
+
+                iframeLoaded = true;
+
+                $iframe.css('opacity', 1);
+
+                $embedContainer
+                    .stop(true, true)
+                    .html($iframe);
+            }
+
+            $iframe.on('load', function() {
+                showIframe();
+            });
+
             $embedContainer.append($iframe);
 
-            setTimeout(() => {
-                if ($embedContainer.find('.player-loading').length) {
-                    $embedContainer.html($iframe);
-                    $iframe.css('opacity', 1);
-                }
-            }, 5000);
+            // fallback: se o load falhar ou atrasar
+            setTimeout(function() {
+                showIframe();
+            }, 3500);
 
             // UI
             $('#playerImage').attr('src', item.image || '');
