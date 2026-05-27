@@ -3292,10 +3292,13 @@
 			`);
 
             const $iframe = $(`
-				<iframe 
-					src="${item.embedUrl}" 
-					frameborder="0" 
-					allow="autoplay" 
+				<iframe
+					src="${item.embedUrl}"
+					frameborder="0"
+					allow="autoplay; encrypted-media; clipboard-write; fullscreen"
+					allowfullscreen
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
 					scrolling="no">
 				</iframe>
 			`);
