@@ -1,12 +1,10 @@
-/*
-===========================================================================
+/*=========================================================================
  PLAY 90 MUSIC - APP.JS (UI & SPA STRUCTURE) BY WEB5XCSS3 - W53 DEVELOPMENT
-===========================================================================
-*/
+===========================================================================*/
 
-// =====================================================
+// ========================
 // TITLE SYSTEM (SEO + SPA)
-// =====================================================
+// ========================
 window.BASE_TITLE = 'Play 90 Music';
 
 window.updatePageTitle = function(data = null, type = '') {
@@ -60,8 +58,8 @@ window.updatePageTitle = function(data = null, type = '') {
 				<div class="logo">
 					<a href="index.html">
 						<picture>
-							<source srcset="https://cdn.jsdelivr.net/gh/web5xcss3/icons/desktop.svg" media="(max-width: 767px)">
-							<img src="https://cdn.jsdelivr.net/gh/web5xcss3/icons/desktop.svg" alt="Play 90 Music" />
+							<source srcset="https://cdn.jsdelivr.net/gh/web5xcss3/hil_w53/gradient.svg" media="(max-width: 767px)">
+							<img src="https://cdn.jsdelivr.net/gh/web5xcss3/hil_w53/gradient.svg" alt="Play 90 Music" />
 						</picture>
 					</a>
 					<ul class="icons">
@@ -140,6 +138,17 @@ window.updatePageTitle = function(data = null, type = '') {
 					<div id="featuredAlbums" class="grid col-6"></div>
 				</section>
 				
+			<!-- Day Titulos -->
+				<section class="wrapper style">
+					<header class="major">
+						<h2 id="dailyFeaturedTitle"></h2>
+					</header>
+					<div class="daily-slider-wrap">
+						<div id="dailyFeaturedTitles"></div>
+						<div id="daily-slick-arrow" class="daily-hero-nav"></div>
+					</div>
+				</section>
+				
 			<!-- Videos Home -->
 				<section class="wrapper style">
 					<header class="major">
@@ -151,15 +160,15 @@ window.updatePageTitle = function(data = null, type = '') {
 					<div id="homeVideos" class="grid col-6"></div>
 				</section>
             
-            <!-- Day Titulos -->
-				<section class="wrapper style">
+			<!-- Arists Home -->
+				<section class="wrapper style top-artists-section">
 					<header class="major">
-						<h2 id="dailyFeaturedTitle"></h2>
+						<h2 id="topArtistsHomeTitle"></h2>
 						<div class="slick-actions">
-							<div id="daily-slick-arrow" class="slick-arrows"></div>
+							<div id="topArtists-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
-					<div id="dailyFeaturedTitles" class="grid col-6"></div>
+					<div id="topArtistsHome"></div>
 				</section>
 
             <!-- DJS -->
@@ -193,7 +202,16 @@ window.updatePageTitle = function(data = null, type = '') {
         <!-- Artists Tab -->
 			<section id="artists" class="tab-content">
 				<article id="action">
-					<ul class="actions">
+					<header class="major">
+						<div class="library-info">
+							<h2 id="libraryTitle"></h2>
+							<p id="libraryTitleDesc"></p>
+						</div>
+						<div class="slick-actions">
+							<div id="action-slick-arrow" class="slick-arrows"></div>
+						</div>
+					</header>
+					<ul class="actions action-slider">
 						<li><button type="button" class="button md-ripples ripples-light" data-tab="videos">Vídeos</button></li>
 						<li><button type="button" class="button md-ripples ripples-light" data-tab="musics">Músicas</button></li>
 						<li><button type="button" class="button md-ripples ripples-light" data-tab="playlists">Playlists</button></li>
@@ -208,13 +226,12 @@ window.updatePageTitle = function(data = null, type = '') {
 				<header class="major">
 					<h2 id="artistsTitle">Artistas</h2>
 				</header>
-				<div id="allArtists" class="grid col-5"></div>
+				<div id="allArtists" class="grid col-6"></div>
 			</section>
 		`;
 	}
 
 // Artists Component
-
 function suballAlbumsContent() {
 	return `
 	<section id="subalbums" class="tab-content">
@@ -227,7 +244,7 @@ function suballAlbumsContent() {
 				<header="align-left">
 					<h2 id="artistName"></h2>
 					<p id="artist-bio"></p>
-					<ul class="actions fit align-middle">
+					<ul class="actions align-middle">
 						<li><button type="button" id="" class="button primary md-ripples ripples-light">Play Music</button></li>
 						<li><button type="button" id="" class="button md-ripples ripples-light">Play Videos</button></li>
 					</ul>
@@ -260,25 +277,17 @@ function suballAlbumsContent() {
 				<!-- All Timeline -->
 				<div class="wrapper style">
 					<header class="major">
-						<h2 id="timelineTitle"></h2>
+						<div class="timeline-info">
+							<h2 id="timelineTitle"></h2>
+							<p id="timelineTitleDesc"></p>
+						</div>
 						<div class="slick-actions">
 							<div id="timeline-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
 					<div id="allTimeline"></div>
 				</div>
-				
-				<!-- Day Hits -->
-				<div class="wrapper style">
-					<header class="major">
-						<h2 id="dailyHitTitle"></h2>
-						<div class="slick-actions">
-							<div id="hits-slick-arrow" class="slick-arrows"></div>
-						</div>
-					</header>
-					<div id="dailyHit"></div>
-				</div>
-				
+
 				<!-- Genres -->
 				<div id="genres" class="wrapper style">
 					<header class="major">
@@ -606,7 +615,6 @@ function videosContent() {
 // =====================================================
 // APP CORE
 // =====================================================
-
 // RENDER ROOT (APENAS UMA VEZ)
 function renderRoot() {
     $('#app').html(App());
@@ -615,7 +623,6 @@ function renderRoot() {
 // =====================================================
 // TABS SYSTEM
 // =====================================================
-
 function initTabSystem() {
 
     $(document)
@@ -657,7 +664,6 @@ function switchTab(tab) {
 // =====================================================
 // EVENTOS GLOBAIS (100% ORGANIZADO)
 // =====================================================
-
 function initGlobalEvents() {
 
     // =========================
@@ -825,7 +831,6 @@ function initGlobalEvents() {
 // =====================================================
 // PLUGINS GLOBAIS (LEVE)
 // =====================================================
-
 function initPlugins() {
     // reservado para plugins leves globais
 }
@@ -878,7 +883,6 @@ function hydrateUI() {
 // =====================================================
 // SEARCH SYSTEM
 // =====================================================
-
 window.searchIndex = [];
 let searchTimeout = null;
 
@@ -953,6 +957,76 @@ function debounceSearch(value) {
     }, 250);
 }
 
+function initActionSlider() {
+    const $slider = $('.action-slider');
+    const $arrows = $('#action-slick-arrow');
+
+    if (!$slider.length) return;
+	
+	 const $titleElement = $('#libraryTitle');
+            if ($titleElement.length) {
+                $titleElement.text('Biblioteca');
+            }
+			
+	const $descElement = $('#libraryTitleDesc');
+            if ($descElement.length) {
+                $descElement.text('Sua coleção completa de músicas');
+            }
+
+    if ($slider.hasClass('slick-initialized')) {
+        $slider.slick('unslick');
+    }
+
+    $slider.slick({
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        infinite: true,
+        arrows: true,
+        dots: false,
+        swipeToSlide: true,
+        variableWidth: true,
+
+        appendArrows: $arrows,
+
+        nextArrow: `
+            <ul class="icons">
+                <li>
+                    <button type="button" class="icon solid fa-chevron-right md-ripples ripples-light"></button>
+                </li>
+            </ul>
+        `,
+
+        prevArrow: `
+            <ul class="icons">
+                <li>
+                    <button type="button" class="icon solid fa-chevron-left md-ripples ripples-light"></button>
+                </li>
+            </ul>
+        `,
+
+        responsive: [
+            {
+                breakpoint: 900,
+                settings: {
+                    slidesToShow: 4
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 3
+                }
+            },
+            {
+                breakpoint: 420,
+                settings: {
+                    slidesToShow: 2
+                }
+            }
+        ]
+    });
+}
+
 // =====================================================
 // RENDER DATA
 // =====================================================
@@ -973,7 +1047,6 @@ function initRenderFunctions() {
     safeCall(renderFeaturedAlbums);
     safeCall(renderRecentlyPlayed);
     safeCall(renderFeaturedDjs);
-    safeCall(renderDailyHit);
     safeCall(renderAllLabels);
     safeCall(renderDailyFeaturedTitles);
     safeCall(renderAllGenres);
@@ -1041,6 +1114,7 @@ $(document).ready(function() {
     updatePageTitle();
     initGlobalEvents();
     initTabSystem();
+	initActionSlider();
 
     window.loadApiData()
         .then(function() {
