@@ -1378,12 +1378,39 @@
                 $titleElement.text('Artistas');
             }
 
-            const allAlbums = [
+            const allAlbumsRaw = [
                 ...(currentData.albums || []),
                 ...(currentData.singles || []),
                 ...(currentData.vinyls || []),
+                ...(currentData.instrumental || []),
+                ...(currentData.djs || []),
+                ...(currentData.musics || []),
+                ...(currentData.playlists || []),
                 ...(currentData.featured || [])
             ];
+
+            // REMOVE DUPLICADOS
+            const seen = new Set();
+
+            const allAlbums = allAlbumsRaw.filter(item => {
+
+                if (!item) return false;
+
+                const key = [
+                    item.id,
+                    item.type,
+                    item.artist,
+                    item.title || item.name
+                ].join('|');
+
+                if (seen.has(key)) {
+                    return false;
+                }
+
+                seen.add(key);
+
+                return true;
+            });
 
             const albumsByArtist = allAlbums.reduce((acc, album) => {
 
@@ -1394,18 +1421,20 @@
                     acc[album.artist] = {
                         name: album.artist,
                         albumCount: 0,
-                        image: album.image || 'https://i.ibb.co/m5Cb336C/music-default.jpg',
+                        image: album.artistImage || album.image || 'https://i.ibb.co/m5Cb336C/music-default.jpg',
                         latestId: album.id || 0
                     };
                 }
 
-                // conta álbuns
                 acc[album.artist].albumCount++;
 
-                // pega o maior ID (mais recente)
                 if ((album.id || 0) > acc[album.artist].latestId) {
                     acc[album.artist].latestId = album.id;
-                    acc[album.artist].image = album.image || acc[album.artist].image;
+
+                    acc[album.artist].image =
+                        album.artistImage ||
+                        album.image ||
+                        acc[album.artist].image;
                 }
 
                 return acc;
@@ -1530,20 +1559,45 @@
         // =================================================
         function renderSubAlbumsByArtist(artist) {
 
-            // NORMALIZADOR (resolve bugs de comparação)
-            const normalize = str => (str || '').toLowerCase().trim();
+            const normalize = str => String(str || '').toLowerCase().trim();
 
-            const allAlbums = [
-                    ...(currentData.albums || []),
-                    ...(currentData.singles || []),
-                    ...(currentData.vinyls || []),
-                    ...(currentData.featured || [])
-                ]
-                .slice()
+            const allAlbumsRaw = [
+                ...(currentData.albums || []),
+                ...(currentData.singles || []),
+                ...(currentData.vinyls || []),
+                ...(currentData.instrumental || []),
+                ...(currentData.djs || []),
+                ...(currentData.musics || []),
+                ...(currentData.playlists || []),
+                ...(currentData.featured || [])
+            ];
+
+            // REMOVE DUPLICADOS
+            const seen = new Set();
+
+            const allAlbums = allAlbumsRaw
+                .filter(album => {
+
+                    if (!album) return false;
+
+                    const key = [
+                        album.id,
+                        album.type,
+                        normalize(album.artist),
+                        normalize(album.title || album.name)
+                    ].join('|');
+
+                    if (seen.has(key)) {
+                        return false;
+                    }
+
+                    seen.add(key);
+
+                    return true;
+                })
                 .sort((a, b) => (b.id || 0) - (a.id || 0))
                 .slice(0, 5000);
 
-            // FILTRO CORRIGIDO
             const albums = allAlbums.filter(album =>
                 album && normalize(album.artist) === normalize(artist)
             );
@@ -1551,78 +1605,94 @@
             const $container = $('#suballAlbums');
             const $title = $('#subalbumsTitle');
 
-            // NOVOS ELEMENTOS (layout artista)
             const $artistName = $('#artistName');
             const $artistImage = $('#artistImage');
 
             if (!$container.length || !$title.length) return;
 
-            // HEADER
-            $title.html(`Álbuns de <span class="artist-name">${artist}</span>`);
+            $title.html(`Álbuns de <span class="artist-name">${escapeHtml(artist)}</span>`);
 
-            // INFO ARTISTA
             if ($artistName.length) {
                 $artistName.text(artist);
             }
 
-            // BIO
             $('#artist-bio').text('Carregando biografia...');
-            loadArtistBioOnly(artist);
 
-            // IMAGEM DO ARTISTA (usa primeiro álbum)
-            const firstAlbum = albums[0];
-            if ($artistImage.length && firstAlbum) {
-                $artistImage.attr('src', firstAlbum.image || '');
+            if (typeof loadArtistBioOnly === 'function') {
+                loadArtistBioOnly(artist);
             }
 
-            // RENDER DOS ÁLBUNS (com chave única)
+            const firstAlbum = albums[0];
+
+            if ($artistImage.length && firstAlbum) {
+                $artistImage.attr(
+                    'src',
+                    firstAlbum.artistImage ||
+                    firstAlbum.image ||
+                    'https://i.ibb.co/m5Cb336C/music-default.jpg'
+                );
+            }
+
+            if (!albums.length) {
+                $container.html(`
+            <div class="no-results">
+                <p>Nenhum álbum encontrado para ${escapeHtml(artist)}.</p>
+            </div>
+        `);
+
+                switchTab('subalbums');
+                return;
+            }
+
             $container.html(albums.map(album => {
 
-                let albumType = 'album';
-
-                if ((currentData.singles || []).find(s => s.id === album.id)) albumType = 'singles';
-                else if ((currentData.albums || []).find(v => v.id === album.id)) albumType = 'albums';
-                else if ((currentData.vinyls || []).find(v => v.id === album.id)) albumType = 'vinyls';
-                else if ((currentData.featured || []).find(f => f.id === album.id)) albumType = 'featured';
+                const albumType = album.type || 'featured';
 
                 return `
-			<div class="album-card md-ripples ripples-light" data-id="${album.id || ''}" data-type="${albumType}" data-key="${albumType}-${album.id}">
-				<article class="box post">
-					<div class="image fit" data-position="center">
-						<img src="${album.image || ''}" alt="${escapeHtml(album.title || '')}" loading="lazy">
-					</div>
-					<header class="song-info">
-						<h3 class="album-title">${escapeHtml(album.title || '')}</h3>
-						<span class="album-artist">${escapeHtml(album.artist || '')}</span>
-					</header>
-				</article>
-			</div>
-			`;
+            <div 
+                class="album-card md-ripples ripples-light" 
+                data-id="${album.id || ''}" 
+                data-type="${albumType}"
+            >
+                <article class="box post">
+                    <div class="image fit" data-position="center">
+                        <img 
+                            src="${album.image || ''}" 
+                            alt="${escapeHtml(album.title || album.name || '')}" 
+                            loading="lazy">
+                    </div>
+
+                    <header class="song-info">
+                        <h3 class="album-title">
+                            ${escapeHtml(album.title || album.name || '')}
+                        </h3>
+
+                        <span class="album-artist">
+                            ${escapeHtml(album.artist || '')}
+                        </span>
+                    </header>
+                </article>
+            </div>
+        `;
             }).join(''));
 
-            // EVENTO CORRIGIDO (SEM BUG)
             $container.off('click').on('click', '.album-card', function(e) {
                 e.preventDefault();
 
-                const key = $(this).attr('data-key');
+                const id = $(this).attr('data-id');
 
-                if (!key) return;
-
-                const [type, id] = key.split('-');
-
-                if (id && type) {
-                    openPlayer(parseInt(id), type);
+                if (id) {
+                    openPlayer(parseInt(id, 10));
                 }
             });
 
-            // efeitos visuais (mantido)
-            setupBannerFillColorEvents('suballAlbums', {
-                autoFirstImage: false
-            });
+            if (typeof setupBannerFillColorEvents === 'function') {
+                setupBannerFillColorEvents('suballAlbums', {
+                    autoFirstImage: false
+                });
+            }
 
-            // troca de aba
             switchTab('subalbums');
-
         }
 
         // ===
