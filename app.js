@@ -551,22 +551,26 @@ function submitAlbumContent() {
                     </div>
 
                     <div class="form-group full">
-                        <label for="publicArtistImage">Imagem do Artista</label>
-                        <input type="file" id="publicArtistImage" name="artistImage" accept="image/*">
-                    </div>
+						<label>Imagem do Artista</label>
+						<label for="publicArtistImage" class="upload-zone">
+							<div class="upload-icon"><i class="fa fa-user"></i></div>
+							<h4>Adicionar imagem do artista</h4>
+							<p>PNG, JPG ou WEBP</p>
+							<img id="publicArtistImagePreview" class="upload-preview">
+						</label>
+						<input type="file" id="publicArtistImage" name="artistImage" accept="image/*"hidden>
+					</div>
 
-                    <div class="image-preview full">
-                        <img id="publicArtistImagePreview" alt="Preview artista">
-                    </div>
-
-                    <div class="form-group full">
-                        <label for="publicImage">Capa do Álbum</label>
-                        <input type="file" id="publicImage" name="image" accept="image/*" required>
-                    </div>
-
-                    <div class="image-preview full">
-                        <img id="publicAlbumImagePreview" alt="Preview álbum">
-                    </div>
+					<div class="form-group full">
+						<label>Capa do Álbum</label>
+						<label for="publicImage" class="upload-zone">
+							<div class="upload-icon"><i class="fa fa-image"></i></div>
+							<h4>Adicionar capa do álbum</h4>
+							<p>Mínimo 500x500 pixels</p>
+							<img id="publicAlbumImagePreview" class="upload-preview">
+						</label>
+						<input type="file" id="publicImage" name="image" accept="image/*"hidden required>
+					</div>
 
                     <div class="form-group">
                         <label for="publicYear">Ano</label>
@@ -599,18 +603,14 @@ function submitAlbumContent() {
                     </div>
 
                     <div class="form-group full">
-                        <button type="submit" class="button primary public-button">
-                            Enviar Álbum Para Aprovação
-                        </button>
-
+                        <button type="submit" class="button public-button">Enviar Álbum Para Aprovação</button>
                         <div id="publicStatus"></div>
                     </div>
 
                 </form>
 
                 <div class="public-note">
-                    <strong>Atenção:</strong>
-                    Todos os envios passam por aprovação antes de serem publicados no site.
+                    <strong>Atenção:</strong> Todos os envios passam por aprovação antes de serem publicados no site.
                 </div>
 
             </section>
@@ -1187,8 +1187,9 @@ function initPublicSubmitForm() {
 
             this.reset();
 
-            $('#publicArtistImagePreview, #publicAlbumImagePreview').attr('src', '');
-            $('#submitAlbum .image-preview').hide();
+            $('#publicArtistImagePreview, #publicAlbumImagePreview')
+				.attr('src', '')
+				.removeClass('active');
 
         } catch (error) {
             console.error(error);
@@ -1220,7 +1221,10 @@ function previewPublicImage(input, previewSelector) {
     const file = input.files && input.files[0];
 
     if (!file) {
-        $(previewSelector).attr('src', '').closest('.image-preview').hide();
+        $(previewSelector)
+            .attr('src', '')
+            .removeClass('active');
+
         return;
     }
 
@@ -1229,8 +1233,7 @@ function previewPublicImage(input, previewSelector) {
     reader.onload = function(e) {
         $(previewSelector)
             .attr('src', e.target.result)
-            .closest('.image-preview')
-            .fadeIn(200);
+            .addClass('active');
     };
 
     reader.readAsDataURL(file);
