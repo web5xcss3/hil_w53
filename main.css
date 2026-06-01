@@ -292,6 +292,7 @@
 		display: grid;
 		column-gap: 1em;
 		row-gap: 1em;
+		margin-bottom: 5em;
 	}
 
 		.col-1 {
@@ -1782,6 +1783,179 @@
     .daily-hero-card::after {
         background: linear-gradient(180deg, rgba(5,5,15,.25), rgba(5,5,15,.95));
     }
+}
+
+/* =========================
+   PUBLIC SUBMIT
+========================= */
+
+.public-submit {
+    max-width: 900px;
+    margin: 3rem auto;
+    padding: 2rem;
+    border-radius: 24px;
+    background:
+        linear-gradient(135deg,
+            rgba(255,0,180,.08),
+            transparent 40%),
+        rgba(8,12,28,.72);
+
+    border: 1px solid rgba(0,212,255,.18);
+
+    backdrop-filter: blur(14px);
+
+    box-shadow:
+        0 0 35px rgba(0,180,255,.08),
+        inset 0 0 30px rgba(255,255,255,.025);
+}
+
+.public-submit h2 {
+    margin-bottom: .5rem;
+    font-size: 2rem;
+    color: #fff;
+
+    text-shadow:
+        0 0 12px rgba(0,212,255,.45),
+        0 0 24px rgba(255,0,180,.25);
+}
+
+.public-submit p {
+    color: rgba(255,255,255,.65);
+    margin-bottom: 2rem;
+}
+
+#publicSubmitForm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+#publicSubmitForm .full {
+    grid-column: 1 / -1;
+}
+
+#publicSubmitForm label {
+    display: block;
+    margin-bottom: .5rem;
+
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+
+    color: rgba(255,255,255,.75);
+}
+
+#publicSubmitForm input,
+#publicSubmitForm select {
+
+    width: 100%;
+    height: 48px;
+
+    border-radius: 12px;
+    border: 1px solid rgba(0,212,255,.15);
+
+    background: rgba(0,0,0,.35);
+
+    color: #fff;
+
+    padding: 0 14px;
+
+    transition: .25s ease;
+}
+
+#publicSubmitForm input:focus,
+#publicSubmitForm select:focus {
+
+    outline: none;
+
+    border-color: rgba(0,212,255,.8);
+
+    box-shadow:
+        0 0 0 3px rgba(0,212,255,.12),
+        0 0 24px rgba(0,212,255,.18);
+}
+
+#publicSubmitForm input[type=file] {
+    padding: 10px;
+    height: auto;
+}
+
+.public-button {
+
+    height: 52px;
+
+    border: 0;
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ce0035, #81008d
+        );
+
+    transition: .25s ease;
+}
+
+.public-button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 0 30px rgba(255,0,180,.25);
+}
+
+#publicStatus {
+
+    margin-top: 1rem;
+
+    font-weight: 700;
+
+    color: #9fffe0;
+}
+
+.public-note {
+
+    margin-top: 2rem;
+
+    padding: 1rem;
+
+    border-radius: 14px;
+
+    background:
+        rgba(0,212,255,.08);
+
+    border:
+        1px solid rgba(0,212,255,.15);
+
+    color:
+        rgba(255,255,255,.75);
+
+    line-height: 1.6;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width:768px) {
+
+    #publicSubmitForm {
+        grid-template-columns: 1fr;
+    }
+
+    .public-submit {
+        padding: 1.25rem;
+    }
+
 }
 
 /* Wrapper */
