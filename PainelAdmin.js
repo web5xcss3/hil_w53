@@ -1,6 +1,4 @@
-const API_BASE = 'https://eurodance-api.onrender.com';
 const API_URL = `${API_BASE}/admin/create-item`;
-let ADMIN_TOKEN = localStorage.getItem('adminToken') || '';
 
 $(function() {
 
