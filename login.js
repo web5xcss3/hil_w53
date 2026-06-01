@@ -8,7 +8,7 @@ function loadAdminScript() {
     const script = document.createElement('script');
 
     script.id = 'painelAdminScript';
-    script.src = 'assets/js/PainelAdmin.js';
+    script.src = 'https://cdn.jsdelivr.net/gh/web5xcss3/hil_w53@e601d4e/PainelAdmin.js';
 
     document.body.appendChild(script);
 }
