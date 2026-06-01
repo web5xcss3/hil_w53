@@ -133,34 +133,32 @@ $(function() {
     });
 
     // IMAGE PREVIEW
-    function previewImage(input, previewSelector) {
-        const file = input.files && input.files[0];
+    function setupImagePreview(inputId, previewId) {
 
-        if (!file) {
-            $(previewSelector).closest('.image-preview').hide();
-            $(previewSelector).attr('src', '');
-            return;
-        }
+        $(document).on('change', inputId, function() {
 
-        const reader = new FileReader();
+            const file = this.files[0];
 
-        reader.onload = function(e) {
-            $(previewSelector)
-                .attr('src', e.target.result)
-                .closest('.image-preview')
-                .fadeIn(200);
-        };
+            if (!file) return;
 
-        reader.readAsDataURL(file);
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+
+                $(previewId)
+                    .attr('src', e.target.result)
+                    .fadeIn();
+
+            };
+
+            reader.readAsDataURL(file);
+
+        });
+
     }
 
-    $('#artistImage').on('change', function() {
-        previewImage(this, '#artistImagePreview');
-    });
-
-    $('#image').on('change', function() {
-        previewImage(this, '#albumImagePreview');
-    });
+    setupImagePreview('#artistImage', '#artistImagePreview');
+    setupImagePreview('#image', '#albumImagePreview');
 
     // LOAD UPLOADS
     async function loadUploadsList() {
