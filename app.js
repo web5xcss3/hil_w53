@@ -1325,7 +1325,7 @@ $(document).ready(function() {
     initTabSystem();
     initActionSlider();
     initPublicSubmitForm();
-	
+
     window.loadApiData()
         .then(function() {
 
