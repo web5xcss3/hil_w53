@@ -15,7 +15,7 @@ window.updatePageTitle = function(data = null, type = '') {
         title = `${BASE_TITLE} | Hits dos Anos 90, Playlists e Rádio Online`;
     } else {
 
-        switch(type) {
+        switch (type) {
 
             case 'song':
                 title = `${data.artist} - ${data.title} (${data.year}) | ${BASE_TITLE}`;
@@ -50,8 +50,8 @@ window.updatePageTitle = function(data = null, type = '') {
 };
 
 // Header Component
-	function Header() {
-		return `
+function Header() {
+    return `
 			<!-- Header -->
 			<header id="header" class="alt">
 				<!-- Logo -->
@@ -83,6 +83,7 @@ window.updatePageTitle = function(data = null, type = '') {
 				<nav id="nav">
 					<ul class="icons">
 						<li class="alt"><button type="button" class="icon solid fa-magnifying-glass md-ripples ripples-light"></button></li>
+						<li><button type="button" id="openSubmitAlbum" class="upload-album-btn button">Enviar Álbum</button></li>
 						<li>
 							<button type="button" class="toggle-dropdown icon solid fa-ellipsis-vertical md-ripples ripples-light"></button>
 							<ul class="dropotron level-0">
@@ -95,11 +96,11 @@ window.updatePageTitle = function(data = null, type = '') {
 
 			</header>
 		`;
-	}
+}
 
 // Menu Component
-	function Menu() {
-		return `
+function Menu() {
+    return `
 			<!-- Menu -->
 			<section id="menu">
 				<ul class="menu">
@@ -109,21 +110,21 @@ window.updatePageTitle = function(data = null, type = '') {
 				</ul>
 			</section>
 		`;
-	}
+}
 
 // Banner Component
-	function Banner() {
-		return `
+function Banner() {
+    return `
 			<!-- Banner -->
 			<section id="banner">
 				<div class="image filtered" data-position="center"></div>
 			</section>
 		`;
-	}
+}
 
 // Home Content Component
-	function HomeContent() {
-		return `
+function HomeContent() {
+    return `
         <!-- Content Home Tab -->
 			<div id="home" class="tab-content active">
 			
@@ -135,7 +136,7 @@ window.updatePageTitle = function(data = null, type = '') {
 							<div id="new-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
-					<div id="featuredAlbums" class="grid col-6"></div>
+					<div id="featuredAlbums"></div>
 				</section>
 				
 			<!-- Day Titulos -->
@@ -159,7 +160,7 @@ window.updatePageTitle = function(data = null, type = '') {
 							<div id="homeVideos-slick-arrow" class="slick-arrows"></div>
 						</div>
 					</header>
-					<div id="homeVideos" class="grid col-6"></div>
+					<div id="homeVideos"></div>
 				</section>
             
 			<!-- Arists Home -->
@@ -196,11 +197,11 @@ window.updatePageTitle = function(data = null, type = '') {
 				</section>
 			</div>
 		`;
-	}
+}
 
 // Artists Component
-	function ArtistsContent() {
-		return `
+function ArtistsContent() {
+    return `
         <!-- Artists Tab -->
 			<section id="artists" class="tab-content">
 				<article id="action">
@@ -231,11 +232,11 @@ window.updatePageTitle = function(data = null, type = '') {
 				<div id="allArtists" class="grid col-6"></div>
 			</section>
 		`;
-	}
+}
 
 // Artists Component
 function suballAlbumsContent() {
-	return `
+    return `
 	<section id="subalbums" class="tab-content">
 
 		<main class="artist-page column">
@@ -269,10 +270,10 @@ function suballAlbumsContent() {
 	</section>
 	`;
 }
-	
+
 // Timeline Component
-	function timelineContent() {
-		return `
+function timelineContent() {
+    return `
 		<!-- Timeline Tab -->
 			<section id="timeline" class="tab-content">
 				
@@ -300,11 +301,11 @@ function suballAlbumsContent() {
 			</section>
 			
 		`;
-	}
+}
 
 // Genres Component
-	function genresContent() {
-		return `
+function genresContent() {
+    return `
 		<!-- Genres Albums Tab -->
 			<section id="genresAlbums" class="tab-content">
 				<header class="major">
@@ -316,11 +317,11 @@ function suballAlbumsContent() {
 				<div id="genresAlbumsList" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Year Albums Component
-	function yearAlbumsContent() {
-		return `
+function yearAlbumsContent() {
+    return `
 		<!-- Year Albums Tab -->
 			<section id="yearAlbums" class="tab-content">
 				<header class="major">
@@ -332,11 +333,11 @@ function suballAlbumsContent() {
 				<div id="yearAlbumsList" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Music Component
-	function musicsContent() {
-		return `
+function musicsContent() {
+    return `
 		<!-- Music -->
 			<section id="musics" class="tab-content">
 				<header class="major">
@@ -348,11 +349,11 @@ function suballAlbumsContent() {
 				<div id="allMusics" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Playlists Component
-	function playlistsContent() {
-		return `
+function playlistsContent() {
+    return `
 		<!-- Playlists -->
 			<section id="playlists" class="tab-content">
 				<header class="major">
@@ -364,11 +365,11 @@ function suballAlbumsContent() {
 				<div id="allPlaylists" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Álbuns Component
-	function albumsContent() {
-		return `
+function albumsContent() {
+    return `
 		<!-- Álbuns Tab -->
 			<section id="albums" class="tab-content">
 				<header class="major">
@@ -380,11 +381,11 @@ function suballAlbumsContent() {
 				<div id="allAlbums" class="grid col-6"></div>
 			</section>
 		`;
-	}
+}
 
 // Single Component
-	function singlesContent() {
-		return `
+function singlesContent() {
+    return `
 		<!-- Single Tab -->
 			<section id="singles" class="tab-content">
 				<header class="major">
@@ -396,11 +397,11 @@ function suballAlbumsContent() {
 				<div id="allSingles" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Vinyl Component
-	function vinylsContent() {
-		return `
+function vinylsContent() {
+    return `
 		<!-- Vinyl Tab -->
 			<section id="vinyls" class="tab-content">
 				<header class="major">
@@ -412,11 +413,11 @@ function suballAlbumsContent() {
 				<div id="allVinyls" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Djs Component
-	function djsContent() {
-		return `
+function djsContent() {
+    return `
 		<!-- Djs Tab -->
 			<section id="djs" class="tab-content">
 				<header class="major">
@@ -428,11 +429,11 @@ function suballAlbumsContent() {
 				<div id="allDjs" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Instrumental Component
-	function instrumentalContent() {
-		return `
+function instrumentalContent() {
+    return `
 		<!-- Instrumental Tab -->
 			<section id="instrumental" class="tab-content">
 				<header class="major">
@@ -444,8 +445,8 @@ function suballAlbumsContent() {
 				<div id="allInstrumentals" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Videos Component
 function videosContent() {
     return `
@@ -471,10 +472,10 @@ function videosContent() {
         </section>
     `;
 }
-	
+
 // Labels Component
-	function labelsContent() {
-		return `
+function labelsContent() {
+    return `
 		<!-- Labels Tab -->
 			<section id="labels" class="tab-content">
 				<header class="major">
@@ -486,11 +487,11 @@ function videosContent() {
 				<div id="labelsList" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
 // Sub Labels Component
-	function labelDetailsContent() {
-		return `
+function labelDetailsContent() {
+    return `
 		<!-- Sub Labels Tab -->
 			<section id="labelDetails" class="tab-content">
 				<header class="major">
@@ -502,11 +503,125 @@ function videosContent() {
 				<div id="labelArtistsList" class="grid col-6"></div>
 			</section>
 		`;
-	}
-	
+}
+
+// Submit Album Component
+function submitAlbumContent() {
+    return `
+        <section id="submitAlbum" class="tab-content">
+
+            <section class="public-submit">
+
+                <header class="major">
+                    <h2>Enviar Álbum</h2>
+                    <p>
+                        Envie um álbum para análise.
+                        Após aprovação ele poderá aparecer na Play90 Music.
+                    </p>
+                </header>
+
+                <form id="publicSubmitForm" enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label for="publicType">Categoria</label>
+                        <select id="publicType" name="type" required>
+                            <option value="albums">Albums</option>
+                            <option value="singles">Singles</option>
+                            <option value="vinyls">Vinyls</option>
+                            <option value="djs">DJs</option>
+                            <option value="musics">Musics</option>
+                            <option value="playlists">Playlists</option>
+                            <option value="instrumental">Instrumental</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicArtist">Artista</label>
+                        <input type="text" id="publicArtist" name="artist" placeholder="Ex: 2 Unlimited" required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="publicTitle">Título</label>
+                        <input type="text" id="publicTitle" name="title" placeholder="Ex: No Limit (CD, Maxi-Single, Germany 1993)" required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="publicEmbedUrl">Embed URL</label>
+                        <input type="url" id="publicEmbedUrl" name="embedUrl" placeholder="https://audiomack.com/embed/..." required>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="publicArtistImage">Imagem do Artista</label>
+                        <input type="file" id="publicArtistImage" name="artistImage" accept="image/*">
+                    </div>
+
+                    <div class="image-preview full">
+                        <img id="publicArtistImagePreview" alt="Preview artista">
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="publicImage">Capa do Álbum</label>
+                        <input type="file" id="publicImage" name="image" accept="image/*" required>
+                    </div>
+
+                    <div class="image-preview full">
+                        <img id="publicAlbumImagePreview" alt="Preview álbum">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicYear">Ano</label>
+                        <input type="text" id="publicYear" name="year" placeholder="1995">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicLabel">Label</label>
+                        <input type="text" id="publicLabel" name="label" placeholder="ZYX Records">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicCountry">País</label>
+                        <input type="text" id="publicCountry" name="country" placeholder="Germany">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicFormat">Formato</label>
+                        <input type="text" id="publicFormat" name="format" placeholder='Vinyl 12"'>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicGenre">Gênero</label>
+                        <input type="text" id="publicGenre" name="genre" placeholder="Electronic">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="publicStyle">Style</label>
+                        <input type="text" id="publicStyle" name="style" placeholder="Eurodance">
+                    </div>
+
+                    <div class="form-group full">
+                        <button type="submit" class="button primary public-button">
+                            Enviar Álbum Para Aprovação
+                        </button>
+
+                        <div id="publicStatus"></div>
+                    </div>
+
+                </form>
+
+                <div class="public-note">
+                    <strong>Atenção:</strong>
+                    Todos os envios passam por aprovação antes de serem publicados no site.
+                </div>
+
+            </section>
+
+        </section>
+    `;
+}
+
 // Main App Component
-	function App() {
-		return `
+function App() {
+    return `
 			${Header()}
 			${Menu()}
 			${Banner()}
@@ -530,6 +645,7 @@ function videosContent() {
 					${labelsContent()}
 					${labelDetailsContent()}
 					${videosContent()}
+					${submitAlbumContent()}
 					<!-- Outros tabs serão adicionados dinamicamente -->
 				</div>
 			</section>
@@ -612,7 +728,7 @@ function videosContent() {
 				<span class="copyright">© Play 90 Music 2026 | <a href="https://www.forumeiros.com/">Crie um forum grátis</a></span>
 			</footer> -->
 		`;
-	}
+}
 
 // =====================================================
 // APP CORE
@@ -635,11 +751,11 @@ function initTabSystem() {
             const tab = $(this).data('tab');
             switchTab(tab);
         });
-		
-		
-	$(document).on('click', '[data-tab="videos"]', function() {
-    renderAllVideos();
-});
+
+
+    $(document).on('click', '[data-tab="videos"]', function() {
+        renderAllVideos();
+    });
 
 }
 
@@ -655,8 +771,8 @@ function switchTab(tab) {
 
     $('[data-tab]').removeClass('active');
     $('[data-tab="' + tab + '"]').addClass('active');
-	
-	 // 🧠 UPDATE TITLE POR TAB
+
+    // 🧠 UPDATE TITLE POR TAB
     updatePageTitle(tab, 'genre'); // fallback simples
 
     // rehidratar UI após troca
@@ -742,9 +858,9 @@ function initGlobalEvents() {
             $image.toggleClass('hidden');
 
             $(this).text(
-                $image.hasClass('hidden')
-                    ? 'Background Color'
-                    : 'Background Image'
+                $image.hasClass('hidden') ?
+                'Background Color' :
+                'Background Image'
             );
         });
 
@@ -821,12 +937,12 @@ function initGlobalEvents() {
                 $('#searchDropdown').hide();
             }
         });
-		
-	$(document)
-    .off('click', '[data-tab="home"]')
-    .on('click', '[data-tab="home"]', function() {
-        renderHomeVideos();
-    });
+
+    $(document)
+        .off('click', '[data-tab="home"]')
+        .on('click', '[data-tab="home"]', function() {
+            renderHomeVideos();
+        });
 
 }
 
@@ -909,8 +1025,8 @@ window.buildSearchIndex = function() {
 
 // BUSCA
 function handleSearch(term) {
-	
-	updatePageTitle(term, 'search'); // 👈 ADICIONA
+
+    updatePageTitle(term, 'search'); // 👈 ADICIONA
 
     const $dropdown = $('#searchDropdown');
     if (!$dropdown.length) return;
@@ -964,16 +1080,16 @@ function initActionSlider() {
     const $arrows = $('#action-slick-arrow');
 
     if (!$slider.length) return;
-	
-	 const $titleElement = $('#libraryTitle');
-            if ($titleElement.length) {
-                $titleElement.text('Biblioteca');
-            }
-			
-	const $descElement = $('#libraryTitleDesc');
-            if ($descElement.length) {
-                $descElement.text('Sua coleção completa de músicas');
-            }
+
+    const $titleElement = $('#libraryTitle');
+    if ($titleElement.length) {
+        $titleElement.text('Biblioteca');
+    }
+
+    const $descElement = $('#libraryTitleDesc');
+    if ($descElement.length) {
+        $descElement.text('Sua coleção completa de músicas');
+    }
 
     if ($slider.hasClass('slick-initialized')) {
         $slider.slick('unslick');
@@ -1006,8 +1122,7 @@ function initActionSlider() {
             </ul>
         `,
 
-        responsive: [
-            {
+        responsive: [{
                 breakpoint: 900,
                 settings: {
                     slidesToShow: 4
@@ -1027,6 +1142,98 @@ function initActionSlider() {
             }
         ]
     });
+}
+
+function initPublicSubmitForm() {
+
+    const $form = $('#publicSubmitForm');
+
+    if (!$form.length) return;
+
+    $form.off('submit').on('submit', async function(e) {
+
+        e.preventDefault();
+
+        const $status = $('#publicStatus');
+
+        $status.text('Enviando álbum para aprovação...');
+
+        const formData = new FormData(this);
+
+        try {
+            const response = await fetch(
+                'https://eurodance-api.onrender.com/public/submit-item', {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+
+            const text = await response.text();
+
+            let data;
+
+            try {
+                data = JSON.parse(text);
+            } catch (e) {
+                console.error('Resposta pública não JSON:', text);
+                throw new Error('A API retornou HTML/texto.');
+            }
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao enviar álbum.');
+            }
+
+            $status.text('✅ Álbum enviado! Aguarde aprovação.');
+
+            this.reset();
+
+            $('#publicArtistImagePreview, #publicAlbumImagePreview').attr('src', '');
+            $('#submitAlbum .image-preview').hide();
+
+        } catch (error) {
+            console.error(error);
+            $status.text('❌ Erro: ' + error.message);
+        }
+    });
+
+    $('#publicArtistImage').off('change').on('change', function() {
+        previewPublicImage(this, '#publicArtistImagePreview');
+    });
+
+    $('#publicImage').off('change').on('change', function() {
+        previewPublicImage(this, '#publicAlbumImagePreview');
+    });
+}
+
+$(document).off('click', '#openSubmitAlbum').on('click', '#openSubmitAlbum', function(e) {
+    e.preventDefault();
+
+    console.log('Abrindo form público...');
+
+    switchTab('submitAlbum');
+
+    initPublicSubmitForm();
+});
+
+function previewPublicImage(input, previewSelector) {
+
+    const file = input.files && input.files[0];
+
+    if (!file) {
+        $(previewSelector).attr('src', '').closest('.image-preview').hide();
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        $(previewSelector)
+            .attr('src', e.target.result)
+            .closest('.image-preview')
+            .fadeIn(200);
+    };
+
+    reader.readAsDataURL(file);
 }
 
 // =====================================================
@@ -1052,8 +1259,8 @@ function initRenderFunctions() {
     safeCall(renderAllLabels);
     safeCall(renderDailyFeaturedTitles);
     safeCall(renderAllGenres);
-	safeCall(renderAllVideos);
-	safeCall(renderHomeVideos);
+    safeCall(renderAllVideos);
+    safeCall(renderHomeVideos);
 }
 
 // =====================================================
@@ -1065,47 +1272,47 @@ window.loadApiData = function() {
     const API = 'https://eurodance-api.onrender.com';
 
     return Promise.all([
-        fetch(`${API}/mock`).then(res => res.json()),
-        fetch(`${API}/labels`).then(res => res.json()),
-        fetch(`${API}/genres`).then(res => res.json())
-    ])
-    .then(([featured, labels, genres]) => {
+            fetch(`${API}/mock`).then(res => res.json()),
+            fetch(`${API}/labels`).then(res => res.json()),
+            fetch(`${API}/genres`).then(res => res.json())
+        ])
+        .then(([featured, labels, genres]) => {
 
-        console.log('API carregada:', featured);
+            console.log('API carregada:', featured);
 
-        window.mockFeatured = featured;
-        window.mockLabels = labels;
-        window.mockGenres = genres;
+            window.mockFeatured = featured;
+            window.mockLabels = labels;
+            window.mockGenres = genres;
 
-        window.currentData = {
-            featured: featured,
-            albums: featured.filter(item => item.type === 'albums'),
-            singles: featured.filter(item => item.type === 'singles'),
-            vinyls: featured.filter(item => item.type === 'vinyls'),
-            instrumental: featured.filter(item => item.type === 'instrumental'),
-            djs: featured.filter(item => item.type === 'djs'),
-            musics: featured.filter(item => item.type === 'music' || item.type === 'musics'),
-            playlists: featured.filter(item => item.type === 'playlists'),
+            window.currentData = {
+                featured: featured,
+                albums: featured.filter(item => item.type === 'albums'),
+                singles: featured.filter(item => item.type === 'singles'),
+                vinyls: featured.filter(item => item.type === 'vinyls'),
+                instrumental: featured.filter(item => item.type === 'instrumental'),
+                djs: featured.filter(item => item.type === 'djs'),
+                musics: featured.filter(item => item.type === 'music' || item.type === 'musics'),
+                playlists: featured.filter(item => item.type === 'playlists'),
 
-            labels: labels,
-            genres: genres
-        };
+                labels: labels,
+                genres: genres
+            };
 
-        window.originalData = {
-            featured: [...featured],
-            albums: [...window.currentData.albums],
-            singles: [...window.currentData.singles],
-            vinyls: [...window.currentData.vinyls],
-            instrumental: [...window.currentData.instrumental],
-            djs: [...window.currentData.djs],
-            musics: [...window.currentData.musics],
-            playlists: [...window.currentData.playlists],
-            labels: [...labels],
-            genres: [...genres]
-        };
+            window.originalData = {
+                featured: [...featured],
+                albums: [...window.currentData.albums],
+                singles: [...window.currentData.singles],
+                vinyls: [...window.currentData.vinyls],
+                instrumental: [...window.currentData.instrumental],
+                djs: [...window.currentData.djs],
+                musics: [...window.currentData.musics],
+                playlists: [...window.currentData.playlists],
+                labels: [...labels],
+                genres: [...genres]
+            };
 
-        return window.currentData;
-    });
+            return window.currentData;
+        });
 };
 
 $(document).ready(function() {
@@ -1116,8 +1323,9 @@ $(document).ready(function() {
     updatePageTitle();
     initGlobalEvents();
     initTabSystem();
-	initActionSlider();
-
+    initActionSlider();
+    initPublicSubmitForm();
+	
     window.loadApiData()
         .then(function() {
 
