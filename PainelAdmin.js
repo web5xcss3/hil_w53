@@ -226,17 +226,30 @@ $(function() {
                         ${item.genre && item.style ? ' • ' : ''}
                         ${item.style || ''}
                     </p>
+					
+<span class="upload-type">
+    ${item.type || 'item'}
+</span>
 
-                    <span class="upload-type">
-                        ${item.type || 'item'}
-                    </span>
+<span class="upload-status ${item.status || 'approved'}">
+    ${item.status === 'pending' ? 'Pendente' : 'Aprovado'}
+</span>
 
-                    <button
-                        type="button"
-                        class="edit-upload"
-                        data-id="${item.id}">
-                        Edit
-                    </button>
+${item.status === 'pending' ? `
+    <button
+        type="button"
+        class="approve-upload"
+        data-id="${item.id}">
+        Aprovar
+    </button>
+` : ''}
+
+<button
+    type="button"
+    class="edit-upload"
+    data-id="${item.id}">
+    Edit
+</button>
 
                     <button
                         type="button"
@@ -520,5 +533,40 @@ $(function() {
             }
         });
     }
+
+    $('#uploadsList').on('click', '.approve-upload', async function() {
+        const id = $(this).data('id');
+
+        if (!id) return;
+
+        $('#adminStatus').text('Aprovando item...');
+
+        try {
+            const response = await fetch(`${API_BASE}/admin/approve-item/${id}`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `Bearer ${ADMIN_TOKEN}`
+                }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Erro ao aprovar item.');
+            }
+
+            $('#adminStatus').text('✅ Item aprovado com sucesso!');
+
+            $('#adminResult').text(
+                JSON.stringify(data.item, null, 2)
+            );
+
+            loadUploadsList();
+
+        } catch (error) {
+            console.error(error);
+            $('#adminStatus').text('❌ Erro: ' + error.message);
+        }
+    });
 
 });
