@@ -400,3 +400,42 @@ input[type=file]{padding:11px;height:auto}
     .upload-item{grid-template-columns:1fr}
     .upload-item img{width:100%;height:180px}
 }
+
+.upload-status {
+    display: inline-block;
+    margin-top: 6px;
+    margin-left: 6px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.upload-status.pending {
+    background: rgba(255, 190, 0, .16);
+    border: 1px solid rgba(255, 190, 0, .35);
+    color: #ffd36b;
+}
+
+.upload-status.approved {
+    background: rgba(0, 255, 180, .14);
+    border: 1px solid rgba(0, 255, 180, .3);
+    color: #9fffe0;
+}
+
+.approve-upload {
+    margin-top: 10px;
+    height: 34px;
+    padding: 0 14px;
+    border-radius: 9px;
+    border: 1px solid rgba(0, 255, 180, .35);
+    background: rgba(0, 255, 180, .15);
+    color: #9fffe0;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.approve-upload:hover {
+    background: rgba(0, 255, 180, .28);
+}
