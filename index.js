@@ -34,15 +34,15 @@
         // ============
         Promise.all([
                 fetch(`${API}/mock`).then(res => res.json()),
-                fetch(`${API}/adminItems`).then(res => res.json()),
+                fetch(`${API}/items`).then(res => res.json()),
                 fetch(`${API}/labels`).then(res => res.json()),
                 fetch(`${API}/genres`).then(res => res.json())
             ])
 
-            .then(([featured, adminItems, labels, genres]) => {
+            .then(([featured, publicItems, labels, genres]) => {
 
                 const allData = [
-                    ...(adminItems || []),
+                    ...(publicItems || []),
                     ...(featured || [])
                 ];
 
@@ -81,16 +81,13 @@
                     )
                 };
 
-                // globals antigas
                 window.currentData = currentData;
                 window.mockFeatured = allData;
                 window.mockLabels = labels;
                 window.mockGenres = genres;
 
-                // backup
                 originalData.featured = [...allData];
 
-                // RENDER
                 renderAllAlbums();
                 renderAllArtists();
                 renderAllPlaylists();
@@ -238,6 +235,34 @@
 
         // INIT
         setupEventListeners();
+
+        // =========================
+        // REMOVE ITEMS DUPLICADOS
+        // =========================
+        function getUniqueItems(items = []) {
+
+            const seen = new Set();
+
+            return items.filter(item => {
+
+                if (!item) return false;
+
+                const key = [
+                    item.id,
+                    item.type,
+                    item.artist,
+                    item.title || item.name
+                ].join('|');
+
+                if (seen.has(key)) {
+                    return false;
+                }
+
+                seen.add(key);
+
+                return true;
+            });
+        }
 
         // ====================
         // HOME FEATURED ALBUMS
@@ -2279,12 +2304,14 @@
         // 2. FUNÇÃO PRINCIPAL (ATUALIZADA)
         function renderAlbumsByYear(year) {
 
-            const allAlbums = [
+            const allAlbums = getUniqueItems([
                 ...(currentData.albums || []),
                 ...(currentData.singles || []),
                 ...(currentData.vinyls || []),
                 ...(currentData.featured || [])
-            ].sort((a, b) => (b.id || 0) - (a.id || 0));
+            ]);
+
+            allAlbums.sort((a, b) => (b.id || 0) - (a.id || 0));
 
             // salva global
             yearAlbumsData = allAlbums.filter(album =>
@@ -2510,12 +2537,14 @@
         // 2. FUNÇÃO PRINCIPAL (RENDER)
         function renderAlbumsByStyle(styleName) {
 
-            const allAlbums = [
+            const allAlbums = getUniqueItems([
                 ...(currentData.albums || []),
                 ...(currentData.singles || []),
                 ...(currentData.vinyls || []),
                 ...(currentData.featured || [])
-            ].sort((a, b) => (b.id || 0) - (a.id || 0));
+            ]);
+
+            allAlbums.sort((a, b) => (b.id || 0) - (a.id || 0));
 
             const normalize = str => (str || '').toLowerCase().trim();
 
